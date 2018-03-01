@@ -1,0 +1,30 @@
+---
+version: 0.2
+
+phases:
+  pre_build:
+    commands:
+      - echo "Installing jq..."
+      - curl -qL -o jq https://stedolan.github.io/jq/download/linux64/jq && chmod +x ./jq
+      - echo "Installing HashiCorp Packer..."
+      - export packer_url=$(curl https://releases.hashicorp.com/index.json | ./jq '{packer}' | egrep "linux.*amd64" | sort --version-sort -r | head -1 | awk -F[\"] '{print $4}')
+      - echo ${packer_url}
+      - curl -o packer.zip $packer_url && unzip packer.zip
+      - echo "Validating amazon-linux_packer.json"
+      - ./packer validate amazon-linux_packer.json
+  build:
+    commands:
+      ### HashiCorp Packer cannot currently obtain the AWS CodeBuild-assigned role and its credentials
+      ### Manually capture and configure the AWS CLI to provide HashiCorp Packer with AWS credentials
+      ### More info here: https://github.com/mitchellh/packer/issues/4279
+      - echo "Configuring AWS credentials"
+      - curl -qL -o aws_credentials.json http://169.254.170.2/$AWS_CONTAINER_CREDENTIALS_RELATIVE_URI > aws_credentials.json
+      - aws configure set region $AWS_REGION
+      - aws configure set aws_access_key_id `./jq -r '.AccessKeyId' aws_credentials.json`
+      - aws configure set aws_secret_access_key `./jq -r '.SecretAccessKey' aws_credentials.json`
+      - aws configure set aws_session_token `./jq -r '.Token' aws_credentials.json`
+      - echo "Building HashiCorp Packer template, amazon-linux_packer.json"
+      - ./packer build amazon-linux_packer.json
+  post_build:
+    commands:
+      - echo "HashiCorp Packer build completed on `date`"
