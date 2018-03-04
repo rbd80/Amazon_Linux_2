@@ -50,6 +50,7 @@
         "python get-pip.py --user",
         "export PATH=~/.local/bin:$PATH",
         "source ~/.bash_profile",
+        "pip --version",
         "sudo pip install ansible"
       ]
     },
