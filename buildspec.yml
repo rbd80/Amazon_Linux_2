@@ -25,9 +25,11 @@ phases:
       - aws configure set aws_secret_access_key `./jq -r '.SecretAccessKey' aws_credentials.json`
       - aws configure set aws_session_token `./jq -r '.Token' aws_credentials.json`
       - echo "Building HashiCorp Packer template, amazon-linux-packer.json"
-      - ./packer build amazon-linux-packer.json
+      - ./packer build -force amazon-linux-packer.json
   post_build:
     commands:
+        - echo "egrep "${AWS_REGION}\:\sami\-"
+        - echo egrep "${AWS_REGION}\:\sami\-" build.log
         - egrep "${AWS_REGION}\:\sami\-" build.log | cut -d' ' -f2 > ami_id.txt
         # Packer doesn't return non-zero status; we must do that if Packer build failed
         - test -s ami_id.txt || exit 1
