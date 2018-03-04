@@ -21,6 +21,8 @@
       "most_recent": true
     },
     "instance_type": "t2.micro",
+    "force_deregister": "true",
+    "force_delete_snapshot": "true",
     "ssh_username": "ec2-user",
     "ami_name": "{{user `ami_name` | clean_ami_name}}",
     "tags": {
