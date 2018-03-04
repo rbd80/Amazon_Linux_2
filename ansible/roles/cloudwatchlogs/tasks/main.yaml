@@ -12,10 +12,10 @@
 #    region: us-east-1
 
 - name: "Create /etc/awslogs."
-    file:
-      path: /etc/awslogs
-      state: directory
-      mode: 755
+  file:
+    path: /etc/awslogs
+    state: directory
+    mode: 755
 
 - name: "Configure Cloudwatch Log Agent."
     include: "conf.yml"
