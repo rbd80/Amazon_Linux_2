@@ -34,5 +34,5 @@
     awslogs_loglevel: info
   roles:
     - common
-    - cis
-   # - cloudwatchlogs
+   #- cis
+    - cloudwatchlogs
