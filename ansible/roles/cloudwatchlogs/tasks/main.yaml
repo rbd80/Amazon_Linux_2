@@ -1,5 +1,44 @@
 ---
 
+- name: "Install CloudWatch Log Agent (Amazon)"
+  yum:
+    name: awslogs
+    state: present
+  register: yum_result
+  ignore_errors: true
+
+- block:
+  - name: "Get ec2 facts."
+    action: ec2_facts
+
+  - name: "Create /etc/awslogs."
+    file:
+      path: /etc/awslogs
+      state: directory
+      mode: 755
+
+  - name: "Configure Cloudwatch Log Agent."
+    include: "conf.yml"
+
+  - name: "Make symlink for /var/awslogs/etc/awslogs.conf"
+    file:
+      src: /etc/awslogs/awslogs.conf
+      dest: /var/awslogs/etc/awslogs.conf
+      state: link
+      owner: root
+      group: root
+      mode: 0644
+      force: true
+
+  - name: "Override /etc/logrotate.d/awslogs"
+    template:
+      src: etc/logrotate.d/awslogs_redhat.j2
+      dest: /etc/logrotate.d/awslogs
+      owner: root
+      group: root
+      mode: 0644
+  when: "yum_result.failed == true"
+
 - name: "Set region for Cloudwatch endpoint"
   template:
     src: templates/etc/aws.conf.j2
