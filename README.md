@@ -20,6 +20,7 @@ orchestrate the entire process.
 
 ## Cloudformation template
 
+
 Cloudformation will create the following resources as part of the AMI Builder for Packer:
 
 * ``cloudformation/pipeline.yaml``
