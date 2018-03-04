@@ -5,6 +5,8 @@
 This Packer AMI Builder creates a new AMI out of the latest Amazon Linux AMI, and also provides a cloudformation template that leverages AWS CodePipeline to 
 orchestrate the entire process.
 
+![Builder Diagram](images/BrairV2.svg)
+
 
 ```bash
 ├── ansible
@@ -42,17 +44,16 @@ TODO: Use check script
 https://aws.amazon.com/blogs/devops/how-to-create-an-ami-builder-with-aws-codebuild-and-hashicorp-packer/
 
 ### Technologies
-
-AWS CloudFormation gives developers and systems administrators an easy way to create and manage a collection of related AWS resources, provisioning and updating them in an orderly and predictable fashion.
-
-Amazon CloudWatch Events enables you to react selectively to events in the cloud and in your applications. Specifically, you can create CloudWatch Events rules that match event patterns, and take actions in response to those patterns.
-
-AWS CodePipeline is a continuous integration and continuous delivery service for fast and reliable application and infrastructure updates. AWS CodePipeline builds, tests, and deploys your code every time there is a code change, based on release process models you define.
-
-Amazon SNS is a fast, flexible, fully managed push notification service that lets you send individual messages or to fan out messages to large numbers of recipients. Amazon SNS makes it simple and cost-effective to send push notifications to mobile device users or email recipients. The service can even send messages to other distributed services.
-Ansible is a simple IT automation system that handles configuration management, application deployment, cloud provisioning, ad-hoc task-execution, and multinode orchestration.
+* [AWS CloudFormation](https://aws.amazon.com/cloudformation/) gives developers and systems administrators an easy way to create and manage a collection of related AWS resources, provisioning and updating them in an orderly and predictable fashion.
+* [Amazon CloudWatch Events](https://docs.aws.amazon.com/AmazonCloudWatch/latest/events/WhatIsCloudWatchEvents.html) enables you to react selectively to events in the cloud and in your applications. Specifically, you can create CloudWatch Events rules that match event patterns, and take actions in response to those patterns.
+* [AWS CodePipeline](https://aws.amazon.com/codepipeline/) is a continuous integration and continuous delivery service for fast and reliable application and infrastructure updates. AWS CodePipeline builds, tests, and deploys your code every time there is a code change, based on release process models you define.
+* [Amazon SNS](https://aws.amazon.com/sns/) is a fast, flexible, fully managed push notification service that lets you send individual messages or to fan out messages to large numbers of recipients. Amazon SNS makes it simple and cost-effective to send push notifications to mobile device users or email recipients. The service can even send messages to other distributed services.
+* [Ansible](https://www.ansible.com/) is a simple IT automation system that handles configuration management, application deployment, cloud provisioning, ad-hoc task-execution, and multinode orchestration.
+* [Packer](https://www.packer.io/) easy to use and automates the creation of any type of machine image. It embraces modern configuration management by encouraging you to use automated scripts to install and configure the software
 
 
+
+* [Packer](https://www.packer.io/)
 
 ## Known issues
 
