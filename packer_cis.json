@@ -46,6 +46,8 @@
     {
       "type": "shell",
       "inline": [
+        "curl -O https://bootstrap.pypa.io/get-pip.py",
+        "python get-pip.py --user",
         "sudo pip install ansible"
       ]
     },
