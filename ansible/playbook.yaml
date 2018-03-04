@@ -27,5 +27,5 @@
         group_name: "system_logs"
   roles:
     - common
-    - cis_hard
+    - cis
     - dharrisio.aws-cloudwatch-logs-agent
