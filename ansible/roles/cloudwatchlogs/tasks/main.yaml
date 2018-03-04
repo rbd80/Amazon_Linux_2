@@ -7,5 +7,5 @@
   register: yum_result
   ignore_errors: true
 
-- name: "Get ec2 facts."
-  action: ec2_facts
+# Gather facts about all instances
+- ec2_instance_facts:
