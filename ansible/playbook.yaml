@@ -6,6 +6,9 @@
   vars:
     # CIS Controls whitepaper:  http://bit.ly/2mGAmUc
     # AWS CIS Whitepaper:       http://bit.ly/2m2Ovrh
+    # Tried to use anthcourtney.cis-amazon-linux but not ready for Amazon2
+    # Cloned and modified
+
     cis_level_1_exclusions:
     # 3.4.2 and 3.4.3 effectively blocks access to all ports to the machine
     ## This can break automation; ignoring it as there are stronger mechanisms than that
@@ -24,5 +27,5 @@
         group_name: "system_logs"
   roles:
     - common
-    - anthcourtney.cis-amazon-linux
+    - cis_hard
     - dharrisio.aws-cloudwatch-logs-agent
