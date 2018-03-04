@@ -7,4 +7,6 @@
   register: yum_result
   ignore_errors: true
 
-
+- block:
+  - name: "Get ec2 facts."
+    action: ec2_facts
