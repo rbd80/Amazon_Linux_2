@@ -9,4 +9,4 @@
 
 # Gather facts about all instances
 - ec2_instance_facts:
-    AWS_REGION: us-east-1
+    region: us-east-1
