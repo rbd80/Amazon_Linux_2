@@ -51,6 +51,7 @@
         "export PATH=~/.local/bin:$PATH",
         "source ~/.bash_profile",
         "pip --version",
+        "sudo easy_install pip",
         "sudo pip install ansible"
       ]
     },
