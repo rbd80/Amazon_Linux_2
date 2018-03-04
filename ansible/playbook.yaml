@@ -17,7 +17,7 @@
 
       # Trouble shooting problems
       - 3.6.2
-      - 5.3.3
+      - 5.3.2
 
     # Cloudwatch Logs will be used instead of Rsyslog/Syslog-ng
     ## Same would be true if any other software that doesn't support Rsyslog/Syslog-ng mechanisms
