@@ -6,3 +6,6 @@
     state: present
   register: yum_result
   ignore_errors: true
+
+- name: "Get ec2 facts."
+  action: ec2_facts
