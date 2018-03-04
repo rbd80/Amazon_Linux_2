@@ -32,7 +32,7 @@
       - file: /var/log/messages
         group_name: "system_logs"
     awslogs_loglevel: info
-    aws_region: us-east-1
+
   roles:
     - common
    #- cis
