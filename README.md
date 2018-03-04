@@ -37,15 +37,6 @@ TODO: Use check script
 * Make sure AWS CLI is configured properly
 * [Configured AWS CLI and Git](http://docs.aws.amazon.com/codecommit/latest/userguide/setting-up-https-unixes.html) to connect to AWS CodeCommit repositories
 
-
-**Launch the Cloudformation stack**
-
-Region | AMI Builder Launch Template
-------------------------------------------------- | ---------------------------------------------------------------------------------
-N. Virginia (us-east-1) | [![Launch Stack](images/launch.jpeg)](https://console.aws.amazon.com/cloudformation/home?region=us-east-1#/stacks/new?stackName=AMI-Builder-Harden&templateURL=https://github.com/rbd80/Amazon_Linux_2/blob/5781921a120b444f0f1d9fe7969f398ee7235ec5/cloudformation/pipeline.yaml)
-
-
-
 ### Reference 
 https://aws.amazon.com/blogs/devops/how-to-create-an-ami-builder-with-aws-codebuild-and-hashicorp-packer/
 
