@@ -5,7 +5,7 @@
 This Packer AMI Builder creates a new AMI out of the latest Amazon Linux AMI, and also provides a cloudformation template that leverages AWS CodePipeline to 
 orchestrate the entire process.
 
-![Builder Diagram](images/BrairV2.svg)
+![Builder Diagram](images/BrairV2.png)
 
 
 ```bash
@@ -56,10 +56,6 @@ https://aws.amazon.com/blogs/devops/how-to-create-an-ami-builder-with-aws-codebu
 * [Packer](https://www.packer.io/)
 
 ## Known issues
-
-* Currently, Packer doesn't work with ECS IAM Roles (also used by CodeBuild)
-    - That's why we build a credentials file that leverages temporary credentials in the ``buildspec``
-    - When Packer supports this feature, this will no longer be necessary
 * If Build process fails and within AWS CodeBuild Build logs you find the following line ``Timeout waiting for SSH.``, it means either
     - A) You haven't chosen a VPC Public Subnet, and therefore Packer cannot connect to the instance
     - B) There may have been a connectivity issue between Packer and EC2; retrying the build step within AWS CodePipeline should work just fine 
