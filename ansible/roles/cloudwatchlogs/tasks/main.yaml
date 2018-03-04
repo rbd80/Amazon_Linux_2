@@ -7,16 +7,4 @@
   register: yum_result
   ignore_errors: true
 
-# Gather facts about all instances
-#- ec2_instance_facts:
-#    region: us-east-1
-
-- name: "Create /etc/awslogs."
-  file:
-    path: /etc/awslogs
-    state: directory
-    mode: 755
-
-- name: "Configure Cloudwatch Log Agent."
-    include: "conf.yml"
 
