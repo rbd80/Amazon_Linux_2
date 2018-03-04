@@ -48,6 +48,8 @@
       "inline": [
         "curl -O https://bootstrap.pypa.io/get-pip.py",
         "python get-pip.py --user",
+        "export PATH=~/.local/bin:$PATH",
+        "source ~/.bash_profile",
         "sudo pip install ansible"
       ]
     },
