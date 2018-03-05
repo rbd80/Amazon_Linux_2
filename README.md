@@ -5,7 +5,7 @@
 This Packer AMI Builder creates a new AMI out of the latest Amazon Linux AMI, and also provides a cloudformation template that leverages AWS CodePipeline to 
 orchestrate the entire process.
 
-![Builder Diagram](images/BrairV2.png)
+![Builder Diagram](images/BriarV2.png)
 
 
 ```bash
