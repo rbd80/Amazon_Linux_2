@@ -35,5 +35,5 @@
 
   roles:
     - common
-   #- cis
-    - cloudwatchlogs
+    - cis
+   # - cloudwatchlogs
