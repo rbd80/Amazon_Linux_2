@@ -37,3 +37,4 @@
     - common
    # - cis
     - cloudwatchlogs
+    - geerlingguy.clamav
