@@ -1,3 +1,4 @@
+
 #
 # ------------------------------------------
 # CLOUDWATCH LOGS AGENT CONFIGURATION FILE
@@ -18,13 +19,13 @@
 # --- AGENT COMMANDS ---
 # To check or change the running status of the CloudWatch Logs Agent, use the following:
 #
-# To check running status: /etc/init.d/awslogs status
-# To stop the agent: /etc/init.d/awslogs stop
-# To start the agent: /etc/init.d/awslogs start
+# To check running status: service awslogs status
+# To stop the agent: service awslogs stop
+# To start the agent: service awslogs start
+# To start the agent on server startup: chkconfig awslogs on
 #
 # --- AGENT LOG OUTPUT ---
 # You can find logs for the agent in /var/log/awslogs.log
-# You can find logs for the agent script in /var/log/awslogs-agent-setup.log
 #
 
 # ------------------------------------------
@@ -34,10 +35,7 @@
 [general]
 # Path to the CloudWatch Logs agent's state file. The agent uses this file to maintain
 # client side state across its executions.
-state_file = /var/awslogs/state/agent-state
-{% if awslogs_loglevel != '' %}
-logging_config_file = /etc/awslogs/awslogs.logging.conf
-{% endif %}
+state_file = /var/lib/awslogs/agent-state
 
 ## Each log file is defined in its own section. The section name doesn't
 ## matter as long as its unique within this file.
@@ -119,12 +117,15 @@ logging_config_file = /etc/awslogs/awslogs.logging.conf
 #  %c           Locale's appropriate date and time representation.                                      Tue Aug 16 21:30:00 1988 (en_US)
 # ----------------------------------------------------------------------------------------------------------------------
 
-{% for log in logs|list + extra_logs|list %}
+{% for log in logs %}
 [{{ log.file }}]
-{% if log.format is defined %}
 datetime_format = {{ log.format }}
-{% endif %}
 file = {{ log.file }}
+buffer_duration = 5000
+log_stream_name = {instance_id}
+initial_position = start_of_file
 log_group_name = {{ log.group_name }}
-log_stream_name = {{ log.stream_name | default(stream_name) }}
 {% endfor %}
+
+
+
