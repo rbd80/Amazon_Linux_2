@@ -4,16 +4,6 @@
   yum: pkg=awslogs state=latest
   become: true
 
-
-- name: copy IAM role
-  copy:
-    src=awscli.conf.j2
-    dest=/etc/awslogs/awscli.conf.j2
-    owner=root
-    group=root
-    mode=0644
-  become: true
-
 - name: write the awslogs config file
   template:
     dest: /etc/awslogs/awslogs.conf
