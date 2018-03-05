@@ -36,5 +36,5 @@
   roles:
     - common
    # - cis
-    - cloudwatchlogs
+   # - cloudwatchlogs
     - geerlingguy.clamav
