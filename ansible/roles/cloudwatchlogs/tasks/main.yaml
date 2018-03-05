@@ -4,16 +4,16 @@
   yum: pkg=awslogs state=latest
   become: true
 
-- name: write the awslogs config file
+- name: "Configure AWS CloudWatch Logs Agent"
   template:
-    dest: /etc/awslogs/awslogs.conf
     src: awslogs.conf.j2
-    group: root
-    mode: 0600
-    owner: root
-  become: true
+    dest: /etc/awslogs/awslogs.conf
 
+- name: "Configure AWS CloudWatch Log Agent logging"
+  template:
+    src: awslogs.logging.conf.j2
+    dest: /etc/awslogs/awslogs.logging.conf
 
-- name: restart after changing the file
+- name: "restart after changing the file"
   service: name=awslogsd state=restarted
   become: true
