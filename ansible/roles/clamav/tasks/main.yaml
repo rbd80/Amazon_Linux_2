@@ -6,12 +6,15 @@
   yum: pkg=awslogs state=latest
   become: true
 
-- name: "Add EPEL repository"
-  yum_repository:
-    name: epel
-    description: EPEL YUM repo
-    baseurl: https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
-  tags: clamav
+#- name: "Add EPEL repository"
+#  yum_repository:
+#    name: epel
+#    description: EPEL YUM repo
+#    baseurl: https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+#  tags: clamav
+
+- name: Download EPEL Repo - Centos/RHEL 7
+  get_url: url=http://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm dest=/tmp/epel-release-latest-7.noarch.rpm
 
 - name: "Install packages required by role"
   yum:
