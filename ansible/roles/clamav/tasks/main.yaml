@@ -13,17 +13,6 @@
     baseurl: https://download.fedoraproject.org/pub/epel/$releasever/$basearch/
   tags: clamav
 
-# Turn on the SELinux boolean for antivirus
-#- seboolean:
-#    name: antivirus_can_scan_system
-#    state: yes
-#    persistent: yes
-
-- file:
-    src: /etc/clamd.d/scan.conf
-    dest: /etc/clamd.conf
-    state: link
-
 - name: "Install packages required by role"
   yum:
     name: "{{ item }}"
