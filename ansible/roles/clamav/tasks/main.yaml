@@ -13,7 +13,7 @@
 #    baseurl: https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
 #  tags: clamav
 
-- name: Download EPEL Repo - Centos/RHEL 7
+- name: "Download EPEL Repo"
   get_url: url=http://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm dest=/tmp/epel-release-latest-7.noarch.rpm
 
 - name: "Install packages required by role"
@@ -69,11 +69,10 @@
 
 - name: "Symlink /etc/clamd.d/scan.conf to /etc/clamd.conf"
   file:
-    src: "/etc/clamd.d/scan.conf.j2"
+    src: "/etc/clamd.d/scan.conf"
     dest: "/etc/clamd.conf"
     owner: root
     group: root
-    validate: '/usr/sbin/visudo -cf %s'
     state: "link"
 
 - name: "Enable and start services"
