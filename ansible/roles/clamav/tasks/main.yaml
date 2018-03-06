@@ -10,7 +10,7 @@
   yum_repository:
     name: epel
     description: EPEL YUM repo
-    baseurl: https://dl.fedoraproject.org/pub/epel/epel-release-latest-$(rpm -E '%{rhel}').noarch.rpm
+    baseurl: https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
   tags: clamav
 
 - name: "Install packages required by role"
