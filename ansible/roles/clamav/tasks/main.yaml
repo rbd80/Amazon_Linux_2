@@ -50,8 +50,8 @@
     dest: "/etc/sysconfig/freshclam"
     backup: "yes"
 
-- name: "Include download-sigs.yml"
-  include: "download-sigs.yml"
+- name: "Include download-sigs.yaml"
+  include: "download-sigs.yaml"
 
 - name: "Config /etc/clamd.d/scan.conf from template"
   template:
