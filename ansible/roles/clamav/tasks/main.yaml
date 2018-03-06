@@ -76,7 +76,7 @@
     state: "link"
 
 - name: "Enable and start services"
-  service:
+  systemd:
     name: "clamd@scan"
     state: "started"
     enabled: "yes"
