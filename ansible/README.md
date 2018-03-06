@@ -22,9 +22,14 @@ cd Amazon_Linux_2
 
 ```
 
+```
+sudo systemctl status clamd@scan
+```
 
 
-
+```
+sudo clamdscan --fdpass /var/log/*
+```
 
 
 
