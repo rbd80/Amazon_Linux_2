@@ -57,17 +57,6 @@
     - "main.cvd"
   when: clamav_download
 
-- name: "Set user ownership for clamav files (Ubuntu)"
-  file:
-    path: "/var/lib/clamav"
-    owner: "clamav"
-    group: "clamav"
-    state: "directory"
-    recurse: "yes"
-  when:
-    - clamav_download
-    - ansible_distribution == 'Ubuntu'
-
 - name: "Set user ownership for clamav files (RedHat)"
   file:
     path: "/var/lib/clamav"
@@ -77,4 +66,3 @@
     recurse: "yes"
   when:
     - clamav_download
-    - ansible_os_family == 'RedHat'
