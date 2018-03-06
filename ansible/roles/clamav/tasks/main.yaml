@@ -61,7 +61,7 @@
 
 - name: "Symlink /etc/clamd.d/scan.conf to /etc/clamd.conf"
   file:
-    src: "/etc/clamd.d/scan.conf"
+    src: "/etc/clamd.d/scan.conf.j2"
     dest: "/etc/clamd.conf"
     state: "link"
 
