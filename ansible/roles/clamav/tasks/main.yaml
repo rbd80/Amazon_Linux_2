@@ -52,6 +52,7 @@
     dest: "/etc/sysconfig/freshclam"
     owner: root
     group: root
+    validate: '/usr/sbin/visudo -cf %s'
     backup: "yes"
 
 - name: "Include download-sigs.yaml"
@@ -63,6 +64,7 @@
     dest: "/etc/clamd.d/scan.conf"
     owner: root
     group: root
+    validate: '/usr/sbin/visudo -cf %s'
     backup: "yes"
 
 - name: "Symlink /etc/clamd.d/scan.conf to /etc/clamd.conf"
@@ -71,6 +73,7 @@
     dest: "/etc/clamd.conf"
     owner: root
     group: root
+    validate: '/usr/sbin/visudo -cf %s'
     state: "link"
 
 - name: "Enable and start services"
