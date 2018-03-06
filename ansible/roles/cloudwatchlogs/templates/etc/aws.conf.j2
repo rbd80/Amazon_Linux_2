@@ -1,5 +1,0 @@
-# {{ ansible_managed }}
-[plugins]
-cwlogs = cwlogs
-[default]
-region = {{ ansible_ec2_placement_region | default(aws_region) }}

@@ -3,10 +3,16 @@
 
 
 This Packer AMI Builder creates a new AMI out of the latest Amazon Linux AMI, and also provides a cloudformation template that leverages AWS CodePipeline to 
-orchestrate the entire process.
+orchestrate the entire process. The following areas are covered within this repo
+
+- CIS controls for Amazon Linux 2 LTE
+- CloudWatch Logs Agent - Forwarder
+
+- OSSEC for HIDS (host-based intrusion detection), log monitoring, and Security Incident Management (SIM)/Security Information and Event Management (SIEM)
+- ClamAV for antivirus engine for detecting trojans, viruses, malware & other malicious threats
+
 
 ![Builder Diagram](images/BriarV2.png)
-
 
 ```bash
 ├── ansible
@@ -31,6 +37,9 @@ Cloudformation will create the following resources as part of the AMI Builder fo
     + AWS CodePipeline - Orchestrates pipeline and listen for new commits in CodeCommit
     + Amazon SNS Topic - AMI Builds Notification via subscribed email
     + Amazon Cloudwatch Events Rule - Custom Event for AMI Builder that will trigger SNS upon AMI completion
+
+
+
 
 ## HOWTO
 

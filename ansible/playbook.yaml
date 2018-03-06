@@ -11,7 +11,7 @@
 
     cis_level_1_exclusions:
     # 3.4.2 and 3.4.3 effectively blocks access to all ports to the machine
-    ## This can break automation; ignoring it as there are stronger mechanisms than that
+    ## This can break  automation; ignoring it as there are stronger mechanisms than that
       - 3.4.2
       - 3.4.3
 
@@ -35,5 +35,7 @@
 
   roles:
     - common
-   # - cis
+    - cis
     - cloudwatchlogs
+    - clamav
+

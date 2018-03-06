@@ -1,0 +1,3 @@
+
+- name: restart awslogs
+  service: name=awslogsd state=restarted
