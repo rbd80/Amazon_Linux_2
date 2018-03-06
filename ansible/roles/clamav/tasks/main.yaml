@@ -1,0 +1,80 @@
+---
+# Loosely based on https://www.adminsys.ch/2015/08/21/installing-clamav-epel-centosred-hat-7-nightmare/
+# https://github.com/artefactual-labs/ansible-clamav
+
+- name: Install awslogs daemon
+  yum: pkg=awslogs state=latest
+  become: true
+
+- name: "Add EPEL repository"
+  yum_repository:
+    name: epel
+    description: EPEL YUM repo
+    baseurl: https://download.fedoraproject.org/pub/epel/$releasever/$basearch/
+  tags: clamav
+
+# Turn on the SELinux boolean for antivirus
+- seboolean:
+    name: antivirus_can_scan_system
+    state: yes
+    persistent: yes
+
+- file:
+    src: /etc/clamd.d/scan.conf
+    dest: /etc/clamd.conf
+    state: link
+
+- name: "Install packages required by role"
+  yum:
+    name: "{{ item }}"
+    state: "latest"
+  with_items:
+    - "git"
+
+- name: "Install ClamAV required packages"
+  yum:
+    name: "{{ item }}"
+    state: "latest"
+  with_items:
+    - "clamav"
+    - "clamav-data"
+    - "clamav-filesystem"
+    - "clamav-lib"
+    - "clamav-server"
+    - "clamav-scanner"
+    - "clamav-update"
+    - "clamav-scanner-systemd"
+    - "clamav-server-systemd"
+
+- name: "Config /etc/freshclam.conf from template"
+  template:
+    src: "etc/freshclam.conf.j2"
+    dest: "/etc/freshclam.conf"
+    backup: "yes"
+
+- name: "Config /etc/sysconfig/freshclam from template"
+  template:
+    src: "etc/sysconfig/freshclam.j2"
+    dest: "/etc/sysconfig/freshclam"
+    backup: "yes"
+
+- name: "Include download-sigs.yml"
+  include: "download-sigs.yml"
+
+- name: "Config /etc/clamd.d/scan.conf from template"
+  template:
+    src: "etc/clamd.d/scan.conf.j2"
+    dest: "/etc/clamd.d/scan.conf"
+    backup: "yes"
+
+- name: "Symlink /etc/clamd.d/scan.conf to /etc/clamd.conf"
+  file:
+    src: "/etc/clamd.d/scan.conf"
+    dest: "/etc/clamd.conf"
+    state: "link"
+
+- name: "Enable and start services"
+  service:
+    name: "clamd@scan"
+    state: "started"
+    enabled: "yes"

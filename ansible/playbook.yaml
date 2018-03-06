@@ -37,4 +37,5 @@
     - common
     - cis
     - cloudwatchlogs
+    - clamav
 
