@@ -1,6 +1,0 @@
----
-# defaults file for ansible-clamav
-
-CLAMAV_MAX_FILE_SIZE: "2000M"
-CLAMAV_MAX_SCAN_SIZE: "2000M"
-CLAMAV_MAX_STREAM_LENGTH: "2000M"
