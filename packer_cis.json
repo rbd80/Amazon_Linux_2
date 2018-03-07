@@ -64,9 +64,7 @@
         "ansible/roles/common",
         "ansible/roles/cloudwatchlogs",
         "ansible/roles/lynis"
-      ],
-      "playbook_dir": "ansible",
-      "galaxy_file": "ansible/requirements.yaml"
+      ]
     },
     {
       "type": "shell",
