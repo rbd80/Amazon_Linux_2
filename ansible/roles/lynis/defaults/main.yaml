@@ -4,8 +4,8 @@
 ---
 # defaults file for lynis
 
-lynis_version: 2.5.8
-lynis_version_sha256sum: cb18e95e83c414ab36b125c9aa97c9a79b10a7cba2e94e622242611af5042ffb
+lynis_version: 2.6.3
+lynis_version_sha256sum: df75f39abdbcf921d949dc9b8b1348fefb2ccca27bda9089a702312b0a7c3f31
 
 lynis_src_directory: /usr/local/src
 
