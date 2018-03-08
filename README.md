@@ -16,11 +16,6 @@ orchestrate the entire process. The following areas are covered within this repo
 
 ![Builder Diagram](images/BriarV2.png)
 
-
-
-
-
-
 ```bash
 ├── ansible
 │   ├── playbook.yaml                       <-- Ansible playbook file
