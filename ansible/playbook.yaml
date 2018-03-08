@@ -35,7 +35,7 @@
 
   roles:
     - common
-    - cis
+    - lynis
     - cloudwatchlogs
-    - clamav
+    - cis
 
