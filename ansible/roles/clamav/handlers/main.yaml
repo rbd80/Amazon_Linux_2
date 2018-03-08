@@ -1,3 +1,0 @@
-
-- name: restart clamav
-  service: name=clamd@scan state=restarted

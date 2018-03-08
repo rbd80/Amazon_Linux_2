@@ -37,5 +37,6 @@
     - common
     - lynis
     - cloudwatchlogs
-    - cis
+    - ossec
+    #- cis
 

@@ -63,7 +63,8 @@
         "ansible/roles/cis",
         "ansible/roles/common",
         "ansible/roles/cloudwatchlogs",
-        "ansible/roles/lynis"
+        "ansible/roles/lynis",
+        "ansible/roles/ossec"
       ]
     },
     {

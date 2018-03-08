@@ -16,13 +16,6 @@ orchestrate the entire process. The following areas are covered within this repo
 ![Builder Diagram](images/BriarV2.png)
 
 
--Kubernetes Daemon sets 
-- OSSEC for HIDS (host-based intrusion detection), log monitoring, and Security Incident Management (SIM)/Security Information and Event Management (SIEM)
-- ClamAV for antivirus engine for detecting trojans, viruses, malware & other malicious threats
-
-
-![Builder Diagram](images/BriarV2.png)
-
 ```bash
 ├── ansible
 │   ├── playbook.yaml                       <-- Ansible playbook file
