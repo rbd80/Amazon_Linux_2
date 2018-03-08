@@ -1,0 +1,16 @@
+---
+# defaults file for lynis
+
+lynis_version: 2.6.3
+lynis_version_sha256sum: df75f39abdbcf921d949dc9b8b1348fefb2ccca27bda9089a702312b0a7c3f31
+
+lynis_src_directory: /usr/local/src
+
+lynis_dest_directory: /opt
+
+lynis_log_directory: /var/log/lynis
+
+lynis_cron: yes
+lynis_cron_weekday: "*"
+lynis_cron_hour: 3
+lynis_cron_minute: 30

@@ -1,0 +1,53 @@
+---
+# tasks file for lynis
+
+- name: Download Lynis.
+  get_url:
+    url: "https://cisofy.com/files/lynis-{{ lynis_version }}.tar.gz"
+    dest: "{{ lynis_src_directory }}/lynis-{{ lynis_version }}.tar.gz"
+    sha256sum: "{{ lynis_version_sha256sum }}"
+  become: yes
+
+- name: Ensure Lynis src directory exists.
+  file:
+    path: "{{ lynis_src_directory }}/lynis-{{ lynis_version }}"
+    state: directory
+  become: yes
+
+- name: Extract Lynis.
+  unarchive:
+    src: "{{ lynis_src_directory }}/lynis-{{ lynis_version }}.tar.gz"
+    dest: "{{ lynis_src_directory }}/lynis-{{ lynis_version }}"
+    creates: "{{ lynis_src_directory }}/lynis-{{ lynis_version }}/lynis"
+    copy: no
+  become: yes
+
+- name: Copy Lynis to dest directory.
+  shell: >
+    rsync --delete -ri --links --exclude="plugins/*"
+    {{ lynis_src_directory }}/lynis-{{ lynis_version }}/lynis/
+    {{ lynis_dest_directory }}/lynis
+    | awk '{print $1}' | grep -vE '..\.\..\.\.\.\.' | wc -l
+  become: yes
+  register: lynis_rsync
+  changed_when: lynis_rsync.stdout|int != 0
+
+- name: Ensure Lynis log directory exists (when lynis_cron).
+  file:
+    path: "{{ lynis_log_directory }}"
+    state: directory
+    mode: 0750
+  become: yes
+  when: lynis_cron
+
+- name: Configure Lynis cron task (when lynis_cron).
+  cron:
+    name: Run Lynis
+    cron_file: lynis
+    minute: "{{ lynis_cron_minute }}"
+    hour: "{{ lynis_cron_hour }}"
+    weekday: "{{ lynis_cron_weekday }}"
+    user: root
+    job: cd {{ lynis_dest_directory }}/lynis && ./lynis audit system --auditor "automated" --cronjob > {{ lynis_log_directory }}/report-$(hostname).$(date +%Y%m%d).txt && mv /var/log/lynis.log {{ lynis_log_directory }}/report-log-$(hostname).$(date +%Y%m%d).log && mv /var/log/lynis-report.dat {{ lynis_log_directory }}/report-data-$(hostname).$(date +%Y%m%d).txt >/dev/null 2>&1
+  become: yes
+  when: lynis_cron
