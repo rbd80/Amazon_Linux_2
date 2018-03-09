@@ -38,9 +38,7 @@
       "Name": "{{user `ami_name`}}"
     },
     "ami_description": "Amazon Linux CIS with Cloudwatch Logs agent",
-    "associate_public_ip_address": "true",
-    "vpc_id": "{{user `vpc`}}",
-    "subnet_id": "{{user `subnet`}}"
+    "associate_public_ip_address": "true"
   }],
   "provisioners": [
     {
