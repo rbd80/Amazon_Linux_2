@@ -28,18 +28,18 @@ orchestrate the entire process. The following areas are covered within this repo
 ├── packer_cis.json                         <-- Packer template for Pipeline
 ```
 
+![Details on the security config](ansible/README.md)
+
 ## Cloudformation template
-
-
 Cloudformation will create the following resources as part of the AMI Builder for Packer:
 
 * ``cloudformation/pipeline.yaml``
-    + AWS CodeCommit - Git repository
+    + AWS CodeCommit - Git repository /  Manual Switch to GITHUB
     + AWS CodeBuild - Downloads Packer and run Packer to build AMI 
     + AWS CodePipeline - Orchestrates pipeline and listen for new commits in CodeCommit
     + Amazon SNS Topic - AMI Builds Notification via subscribed email
     + Amazon Cloudwatch Events Rule - Custom Event for AMI Builder that will trigger SNS upon AMI completion
-
+    + AWS IAM - With all of the needed Packer permissions
 
 
 
@@ -50,6 +50,19 @@ TODO: Use check script
 * Install [GIT](https://git-scm.com/downloads) if you don't have it
 * Make sure AWS CLI is configured properly
 * [Configured AWS CLI and Git](http://docs.aws.amazon.com/codecommit/latest/userguide/setting-up-https-unixes.html) to connect to AWS CodeCommit repositories
+
+## Installation 
+    1. Login to the AWS console with enough permisssions to creatae a cloudformataion template
+    2. Copy the template from [Cloudformation Template](cloudformation/pipeline.yaml)
+    3. Paste in AWS Cloudformation and exec.
+    4. TODO: Fix this.  Manual switch codecommit to GITHUB
+    5. Git Commet on codebase and AWS pipeline will start
+
+
+
+
+
+
 
 ### Reference 
 https://aws.amazon.com/blogs/devops/how-to-create-an-ami-builder-with-aws-codebuild-and-hashicorp-packer/
