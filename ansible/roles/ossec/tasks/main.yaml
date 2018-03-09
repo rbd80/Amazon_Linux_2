@@ -2,15 +2,6 @@
 ###########################################################################
 # INSTALLATION                                                            #
 ###########################################################################
-
-# Is OSSEC configured and installed? If so, we can skip all the
-# compilation stuff. If you want to re-install, just remove
-# 'ossec.install_dir' and re-run.
-- name: ossec - check if installed
-  command: /bin/true creates={{ ossec.install_dir }}
-  register: installed
-  tags: ossec
-
 # Check for and install required compiler component
 - name: ossec - install required compiler components (if necessary)
   apt: pkg=build-essential state=installed
