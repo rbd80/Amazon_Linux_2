@@ -2,6 +2,15 @@
 ###########################################################################
 # INSTALLATION                                                            #
 ###########################################################################
+
+# Add AtomiCorp yum repository
+- name: Add repository
+  yum_repository:
+    name: AtomiCorp
+    description: AtomiCorp yum repository
+    baseurl: https://updates.atomicorp.com/installers/atomic
+
+
 # Check for and install required compiler component
 - name: ossec - install required compiler components (if necessary)
   apt: pkg=build-essential state=installed
