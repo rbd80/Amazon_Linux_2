@@ -304,6 +304,45 @@ Resources:
             -
               Id: "NewAMI-Notify"
               Arn: !Ref AmiBuilderNotificationTopic
+  HIDSInstanceRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+        - Action:
+          - sts:AssumeRole
+          Effect: Allow
+          Principal:
+            Service:
+            - ec2.amazonaws.com
+        Version: '2012-10-17'
+      Path: /
+  HIDSInstancePolicy:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyName: "hids_ec2_cwl_policy"
+      PolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          -
+            Effect: "Allow"
+            Action:
+              - "logs:CreateLogGroup"
+              - "logs:CreateLogStream"
+              - "logs:PutLogEvents"
+              - "logs:DescribeLogStreams"
+            Resource: "arn:aws:logs:*:*:*"
+      Roles:
+        -
+          Ref: "HIDSInstanceRole"
+  HIDSInstanceProfile:
+    Type: AWS::IAM::InstanceProfile
+    Properties:
+      Path: /
+      Roles:
+      - Ref: HIDSInstanceRole
+
+
 
 
 Outputs:
