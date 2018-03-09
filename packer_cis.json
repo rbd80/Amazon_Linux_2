@@ -56,11 +56,7 @@
       "type": "ansible-local",
       "playbook_file": "ansible/playbook.yaml",
       "role_paths": [
-        "ansible/roles/cis",
-        "ansible/roles/common",
-        "ansible/roles/cloudwatchlogs",
-        "ansible/roles/lynis",
-        "ansible/roles/ossec"
+        "ansible/roles/"
       ]
     },
     {
