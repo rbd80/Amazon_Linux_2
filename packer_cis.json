@@ -23,6 +23,7 @@
     "instance_type": "t2.micro",
     "force_deregister": "true",
     "force_delete_snapshot": "true",
+    "encrypt_boot": true,
     "ssh_username": "ec2-user",
     "ami_name": "{{user `ami_name` | clean_ami_name}}",
     "tags": {
@@ -40,15 +41,24 @@
     "ami_description": "Amazon Linux CIS with Cloudwatch Logs agent",
     "associate_public_ip_address": "true"
   }],
-  "provisioners": [
-    {
+  "provisioners": [{
+    "type": "file",
+    "source": "ossec/ossec_preloaded-vars.conf",
+    "destination": "/home/admin/ossec_preloaded-vars.conf"
+      },
+      {
       "type": "shell",
       "inline": [
         "sudo easy_install pip",
         "pip --version",
         "sudo pip install boto3",
         "sudo pip install ansible"
-      ]
+      ]},
+    {
+      "scripts": [
+        "ossec/ossec.sh"
+      ],
+      "type": "shell"
     },
     {
       "type": "ansible-local",

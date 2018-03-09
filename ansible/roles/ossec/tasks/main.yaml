@@ -10,6 +10,20 @@
     description: AtomiCorp yum repository
     baseurl: https://updates.atomicorp.com/installers/atomic
 
+- name: Download Lynis.
+  get_url:
+    url: "https://updates.atomicorp.com/channels/atomic/centos/7/x86_64/RPMS/atomic-release-1.0-21.el7.art.noarch.rpm"
+    dest: "{{ ossec.tmp_dir }}/atomic-release-1.0-21.el7.art.noarch.rpm"
+  become: yes
+
+sudo yum groupinstall "Development Tools"
+yumdownloader --source htop
+wget https://github.com/ossec/ossec-hids/archive/2.9.3.tar.gz && mv 2.9.3.tar.gz ossec-hids-2.9.3.tar.gz
+tar xfz ossec-hids-2.9.3.tar.gz && cd ossec-hids-2.9.3
+
+
+/var/ossec/bin/ossec-control start
+
 
 # Check for and install required compiler component
 - name: ossec - install required compiler components (if necessary)
