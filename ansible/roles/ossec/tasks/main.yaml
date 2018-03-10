@@ -46,7 +46,7 @@
 - name:  "Extract OSSEC "
   unarchive:
     src: "{{ ossec_tmp_dir }}/{{ ossec_tarball }}"
-    dest: "{{ ossec_install_dir }}"
+    dest: "{{ ossec_tmp_dir }}/{{ ossec_untar_dir }}"
 
 #tar xfz ossec-hids-${ossec_version}.tar.gz
 #cd ossec-hids-${ossec_version}
@@ -55,15 +55,12 @@
 #sudo bash ./install.sh
 #sudo /var/ossec/bin/ossec-control start
 
-
 - name: "OSSEC add the preloaded config file"
   template:
     src: templates/preloaded-vars.conf.j2
     dest: "{{ ossec_tmp_dir }}/preloaded-vars.conf"
 
-
-# Build / Install the agent
-- name: ossec - build/install the agent
+- name: "Build / Install the agent"
   command: ./install.sh chdir={{ ossec_tmp_dir }}/{{ ossec_untar_dir }}
 
 
@@ -71,8 +68,7 @@
 # CONFIGURATION                                                           #
 ###########################################################################
 
-# Configure the agent ossec.conf (override per-host if needed)
-- name: ossec - configure the agent (ossec.conf)
+- name: "Configure the agent ossec.conf "
   template: dest={{ ossec.install_dir }}/etc/ossec.conf
             owner=root
             group=ossec
