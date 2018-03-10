@@ -41,13 +41,13 @@
   shell: gpg --import {{ ossec_install_dir }}/OSSEC-ARCHIVE-KEY.asc
 
 # TODO Fix the checksum
-#- name: "Verify OSSEC ASC"
-#  shell: gpg --verify {{ extract_path }}/ossec-hids-{{ ossec_version }}.tar.gz.asc {{ extract_path }}/{{ ossec_version }}.tar.gz
+- name: "Verify OSSEC ASC"
+  shell: gpg --verify {{ ossec_tmp_dir }}/ossec-hids-{{ ossec_version }}.tar.gz.asc {{ ossec_tmp_dir }}/{{ ossec_version }}.tar.gz
 
 - name:  "Extract OSSEC "
   unarchive:
-    src: "{{ ossec.url }}/{{ ossec.tarball }}"
-    dest: "{{ ossec.install_dir }}"
+    src: "{{ ossec_tmp_dir }}/{{ ossec_tarball }}"
+    dest: "{{ ossec_install_dir }}"
 
 #tar xfz ossec-hids-${ossec_version}.tar.gz
 #cd ossec-hids-${ossec_version}
