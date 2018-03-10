@@ -11,7 +11,13 @@
     - telnet
   become: true
 
-- name: "Download Ossec-hids."
+- name: "Ensure OSSEC src directory exists."
+  file:
+    path: "{{ extract_path }}/${ossec_version}}"
+    state: directory
+  become: yes
+
+- name: "Download OSSEC-HIDS"
   get_url:
     url: "https://github.com/ossec/ossec-hids/archive/${ossec_version}.tar.gz"
     dest: "{{ extract_path }}/${ossec_version}.tar.gz"
