@@ -27,17 +27,18 @@
   get_url:
     url: "{{ ossec_urlasc }}"
     dest: "{{ extract_path }}/{{ ossec_version }}.tar.gz.asc"
-  become: yes
 
 - name: "Download OSSEC-HIDS archive key."
   get_url:
     url: "https://ossec.github.io/files/OSSEC-ARCHIVE-KEY.asc"
-    dest: "{{ extract_path }}/OSSEC-ARCHIVE-KEY.asc"
-  become: yes
+    dest: "OSSEC-ARCHIVE-KEY.asc"
+  args:
+     chdir: {{ extract_path }}
 
 - name: "Import the OSSEC Archive Key"
   shell: gpg --import {{ extract_path }}/OSSEC-ARCHIVE-KEY.asc
-  become: yes
+  args:
+     chdir: {{ extract_path }}
 
 - name: "Verify OSSEC ASC"
   shell: gpg --verify ossec-hids-${ossec_version}.tar.gz.asc ${ossec_version}.tar.gz
