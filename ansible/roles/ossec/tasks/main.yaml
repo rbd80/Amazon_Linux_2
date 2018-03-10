@@ -42,7 +42,7 @@
 
 - name:  "Extract OSSEC "
   unarchive:
-    src: "{{ extract_path }}/{{ ossec_version }}.tar.gz"
+    src: "{{ extract_path }}/ossec-hids-{{ ossec_version }}.tar.gz"
     dest: "{{ extract_path }}"
 
 #tar xfz ossec-hids-${ossec_version}.tar.gz
