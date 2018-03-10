@@ -40,11 +40,6 @@
 #- name: "Verify OSSEC ASC"
 #  shell: gpg --verify {{ extract_path }}/ossec-hids-{{ ossec_version }}.tar.gz.asc {{ extract_path }}/{{ ossec_version }}.tar.gz
 
-- name: "OSSEC - untar the tarball"
-  command: /bin/tar -xzf {{ extract_path }}/${ossec_version}.tar.gz
-#  args:
-#    chdir: "{{ source_dir }}"
-
 - name:  "Extract OSSEC "
   unarchive:
     src: {{ extract_path }}/${ossec_version}.tar.gz
