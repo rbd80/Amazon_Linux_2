@@ -21,7 +21,6 @@
     path: "{{ ossec_tmp_dir }}"
     state: directory
 
-
 - name: "Download OSSEC-HIDS"
   get_url:
     url: "{{ ossec_url }}/{{ ossec_version }}.tar.gz"
@@ -60,15 +59,13 @@
 - name: "OSSEC add the preloaded config file"
   template:
     src: templates/preloaded-vars.conf.j2
-    dest: ./etc/preloaded-vars.conf
+    dest: "{{ ossec_tmp_dir }}/preloaded-vars.conf"
 
 
 # Build / Install the agent
 - name: ossec - build/install the agent
-  command: ./install.sh chdir={{ ossec.tmp_dir }}/{{ ossec.untar_dir }}
-  when: (installed.changed is defined and installed.changed) or
-        (tarball.changed is defined and tarball.changed)
-  tags: ossec
+  command: ./install.sh chdir={{ ossec_tmp_dir }}/{{ ossec_untar_dir }}
+
 
 ###########################################################################
 # CONFIGURATION                                                           #
