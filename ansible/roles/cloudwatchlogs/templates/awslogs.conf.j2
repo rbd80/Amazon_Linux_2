@@ -44,8 +44,8 @@ logging_config_file = /etc/awslogs/awslogs.logging.conf
 #[kern.log]
 #
 ## Path of log file for the agent to monitor and upload.
-#file = /var/log/kern.log
-#
+file = /var/ossec/logs/alerts/alerts.json
+
 ## Name of the destination log group.
 #log_group_name = kern.log
 #
@@ -60,11 +60,11 @@ logging_config_file = /etc/awslogs/awslogs.logging.conf
 #
 ## A batch is buffered for buffer-duration amount of time or 32KB of log events.
 ## Defaults to 5000 ms and its minimum value is 5000 ms.
-#buffer_duration = 5000
+buffer_duration = 5000
 #
 # Use 'end_of_file' to start reading from the end of the file.
 # Use 'start_of_file' to start reading from the beginning of the file.
-#initial_position = start_of_file
+initial_position = start_of_file
 #
 ## Encoding of file
 #encoding = utf-8 # Other supported encodings include: ascii, latin-1

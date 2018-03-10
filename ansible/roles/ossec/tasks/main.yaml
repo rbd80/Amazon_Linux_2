@@ -3,87 +3,73 @@
 # INSTALLATION                                                            #
 ###########################################################################
 
-# Add AtomiCorp yum repository
-- name: Add repository
-  yum_repository:
-    name: AtomiCorp
-    description: AtomiCorp yum repository
-    baseurl: https://updates.atomicorp.com/installers/atomic
+- name: "RedHat | Install atomicorp repo"
+  yum:
+    name: "https://www.atomicorp.com/channels/atomic/centos/{{ ansible_distribution_major_version }}/x86_64/RPMS/atomic-release-{{ ossec_server_atomic_release }}.el{{ ansible_distribution_major_version }}.art.noarch.rpm"
+    state: present
 
-- name: Download Lynis.
+- name: "AmazonLinux 2 | Install epel repo"
+  yum:
+    name: "https://dl.fedoraproject.org/pub/epel/epel-release-latest-{{ ansible_distribution_major_version }}.noarch.rpm"
+    state: present
+
+- name: "Install packages for OSSEC agent"
+  action: >
+    {{ ansible_pkg_mgr }} name={{ item }} state=present update_cache=yes
+  with_items:
+    - gcc
+    - httpd
+    - telnet
+  become: true
+
+- name: "Download Ossec-hids."
   get_url:
-    url: "https://updates.atomicorp.com/channels/atomic/centos/7/x86_64/RPMS/atomic-release-1.0-21.el7.art.noarch.rpm"
-    dest: "{{ ossec.tmp_dir }}/atomic-release-1.0-21.el7.art.noarch.rpm"
+    url: "https://github.com/ossec/ossec-hids/archive/${ossec_version}.tar.gz"
+    dest: "{{ extract_path }}/${ossec_version}.tar.gz"
   become: yes
 
-sudo yum groupinstall "Development Tools"
-yumdownloader --source htop
-wget https://github.com/ossec/ossec-hids/archive/2.9.3.tar.gz && mv 2.9.3.tar.gz ossec-hids-2.9.3.tar.gz
-tar xfz ossec-hids-2.9.3.tar.gz && cd ossec-hids-2.9.3
+- name: "Download Ossec-hids asc."
+  get_url:
+    url: "https://github.com/ossec/ossec-hids/releases/download/${ossec_version}/ossec-hids-${ossec_version}.tar.gz.asc"
+    dest: "{{ extract_path }}/${ossec_version}.tar.gz.asc"
+  become: yes
+
+- name: "Download Ossec-hids archive key."
+  get_url:
+    url: "https://ossec.github.io/files/OSSEC-ARCHIVE-KEY.asc"
+    dest: "{{ extract_path }}/OSSEC-ARCHIVE-KEY.asc"
+  become: yes
+
+- name: "Import the OSSEC Archive Key"
+  shell: gpg --import OSSEC-ARCHIVE-KEY.asc
+  become: yes
+
+- name: "Verify OSSEC ASC"
+  shell: gpg --verify ossec-hids-${ossec_version}.tar.gz.asc ${ossec_version}.tar.gz
+  become: yes
+
+- name: "OSSEC - untar the tarball"
+  command: /bin/tar -xzf {{ extract_path }}/${ossec_version}.tar.gz
+#  args:
+#    chdir: "{{ source_dir }}"
 
 
-/var/ossec/bin/ossec-control start
+
+#mv ${ossec_version}.tar.gz ossec-hids-${ossec_version}.tar.gz
+
+#tar xfz ossec-hids-${ossec_version}.tar.gz
+#cd ossec-hids-${ossec_version}
+#cp /home/admin/ossec_preloaded-vars.conf ./etc/preloaded-vars.conf
+#cat ./etc/preloaded-vars.conf#
+#sudo bash ./install.sh
+#sudo /var/ossec/bin/ossec-control start
 
 
-# Check for and install required compiler component
-- name: ossec - install required compiler components (if necessary)
-  apt: pkg=build-essential state=installed
-  register: compiler
-  when: installed.changed is defined and installed.changed
-  tags: ossec
+- name: "OSSEC add the preloaded config file"
+  template:
+    src: /templates/preloadaed-vars.conf.j2
+    dest: ./etc/preloaded-vars.conf
 
-# Download ossec tarball if it doesn't already exist and ossec is not
-# installed
-- name: ossec - download ossec tarball
-  get_url: url={{ ossec.url }}/{{ ossec.tarball }}
-           dest={{ ossec.tmp_dir }}/{{ ossec.tarball }}
-           mode=0600
-  when: installed.changed is defined and installed.changed
-  register: tarball
-  tags: ossec
-
-# Calculate the md5 checksum of the tarball
-- name: ossec - calculate the md5 checksum of the tarball
-  shell: /usr/bin/md5sum {{ ossec.tmp_dir }}/{{ ossec.tarball }}
-  register: md5
-  when: tarball.changed is defined and tarball.changed
-  tags: ossec
-
-# Verify the md5 checksum against the known value
-- name: ossec - verify the md5 checksum of the tarball
-  fail: msg="[WARNING] checksum {{ md5.stdout }} != {{ ossec.checksum }}"
-  when: md5.stdout is defined and md5.stdout.split()[0] != ossec.checksum
-  tags: ossec
-
-# If we get this far, untar the tarball
-- name: ossec - untar the tarball
-  command: /bin/tar -xzf {{ ossec.tmp_dir }}/{{ ossec.tarball }}
-           chdir={{ ossec.tmp_dir }}
-           creates={{ ossec.tmp_dir }}/{{ ossec.untar_dir }}
-  when: tarball.changed is defined and tarball.changed
-  tags: ossec
-
-# Populate the preloaded-vars.conf
-- name: ossec - configure preloaded-vars.conf
-  template: dest={{ ossec.tmp_dir }}/{{ ossec.untar_dir
-            }}/etc/preloaded-vars.conf
-            backup=yes
-  first_available_file:
-    - "{{ ansible_hostname }}_preloaded-vars.conf.j2"
-    - preloaded-vars.conf.j2
-  when: tarball.changed is defined and tarball.changed
-  tags: ossec
-
-# Create a system group
-- name: ossec - create system group
-  group: name=ossec state=present system=yes
-  tags: ossec
-
-# Create a system user
-- name: ossec - create system user
-  user: name=ossec group=ossec state=present home={{ ossec.install_dir
-        }} createhome=no system=yes
-  tags: ossec
 
 # Build / Install the agent
 - name: ossec - build/install the agent
@@ -155,51 +141,6 @@ tar xfz ossec-hids-2.9.3.tar.gz && cd ossec-hids-2.9.3
 # Ensure the services are started
 - name: ossec - start ossec
   service: name=ossec state=started pattern=ossec
-  tags: ossec
-
-###########################################################################
-# SERVER KEY SYNC                                                         #
-###########################################################################
-
-# Save the client key
-- name: ossec - save client.keys to a variable
-  shell: cat {{ ossec.install_dir }}/etc/client.keys
-  when: client_key.changed
-  register: server_key
-  tags: ossec
-
-# Store key on the server
-- name: ossec - copy key to ossec.server
-  template: dest={{ ossec.install_dir }}/etc/keys/{{ ansible_hostname }}
-            owner=root
-            group=root
-            mode=0400
-  first_available_file:
-    - server.key.j2
-  when: client_key.changed
-  delegate_to: "{{ ossec.server }}"
-  tags: ossec
-
-# Remove the server's queue/rids file for a fresh start
-- name: ossec - remove stale rids file
-  file: path={{ ossec.install_dir }}/queue/rids/{{
-        server_key.stdout.split()[0] }}
-        state=absent
-  when: client_key.changed
-  notify: ossec - restart server
-  delegate_to: "{{ ossec.server }}"
-  tags: ossec
-
-# Assemble the final full server keys file
-- name: ossec - assemble server keys file from fragments
-  assemble: src={{ ossec.install_dir }}/etc/keys
-            dest={{ ossec.install_dir }}/etc/client.keys
-            owner=ossec
-            group=root
-            mode=0644
-            backup=yes
-  delegate_to: "{{ ossec.server }}"
-  notify: ossec - restart server
   tags: ossec
 
 ###########################################################################

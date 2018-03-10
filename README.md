@@ -62,11 +62,11 @@ TODO: Use check script
 
 
 
-
+https://s3-external-1.amazonaws.com/cf-templates-h7iqxoi3arkm-us-east-1/20180693MP-WorkingAMIPacker72xwrtvyjcj
 
 ### Reference 
 https://aws.amazon.com/blogs/devops/how-to-create-an-ami-builder-with-aws-codebuild-and-hashicorp-packer/
-
+https://github.com/awslabs/ami-builder-packer
 ### Technologies
 * [AWS CloudFormation](https://aws.amazon.com/cloudformation/) gives developers and systems administrators an easy way to create and manage a collection of related AWS resources, provisioning and updating them in an orderly and predictable fashion.
 * [Amazon CloudWatch Events](https://docs.aws.amazon.com/AmazonCloudWatch/latest/events/WhatIsCloudWatchEvents.html) enables you to react selectively to events in the cloud and in your applications. Specifically, you can create CloudWatch Events rules that match event patterns, and take actions in response to those patterns.

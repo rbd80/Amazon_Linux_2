@@ -1,0 +1,15 @@
+# defaults file for OSSEC
+
+ossec_version: 2.9.3
+
+ossec_url: https://bintray.com/artifact/download/ossec/ossec-hids/ossec-hids-2.9.3.tar.gz
+ossec_path: /opt/ossec-hids-2.9.3.tar.gz
+ossec_path2: /opt/ossec-hids-2.9.3
+ossec_manage_agent_input: /opt/ossec_manage_agent_input.txt
+extract_path: /opt
+ossec_server_ip: 192.168.0.3 #ossec server ip address
+#j2_path: /etc/ansible/roles/ossec-client/templates/ossec_client_input.j2
+#client_key_path: /etc/ansible/roles/ossec-client/templates/client2.keys
+#remote_client_key_path: /var/ossec/etc/client2.keys
+
+#wget https://github.com/ossec/ossec-hids/archive/2.9.3.tar.gz

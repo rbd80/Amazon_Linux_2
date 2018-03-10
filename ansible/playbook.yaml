@@ -35,8 +35,8 @@
 
   roles:
     - common
-    #- lynis
+    - ossec
     - cloudwatchlogs
-    #- ossec
+    #- lynis
     #- cis
 
