@@ -3,7 +3,10 @@
 # INSTALLATION                                                            #
 ###########################################################################
 - name: "AmazonLinux 2 | Enable EPEL"
-  command: yum-config-manager --enable epel
+  yum_repository:
+    name: epel
+    description: EPEL YUM repo
+    baseurl: https://download.fedoraproject.org/pub/epel/$releasever/$basearch/
 
 - name: "Install packages for OSSEC agent"
   action: >
