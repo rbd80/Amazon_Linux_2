@@ -13,23 +13,23 @@
 
 - name: "Ensure OSSEC src directory exists."
   file:
-    path: "{{ extract_path }}/ossec-hids-{{ossec_version}}"
+    path: "{{ extract_path }}/ossec-hids-{{ ossec_version }}"
     state: directory
   become: yes
 
 - name: "Download OSSEC-HIDS"
   get_url:
-    url: "{{ossec_url}}"
-    dest: "{{ extract_path }}/ossec-hids-{{ossec_version}}"
+    url: "{{ ossec_url }}"
+    dest: "{{ extract_path }}/ossec-hids-{{ ossec_version }}"
   become: yes
 
 - name: "Download OSSEC-HIDS ASC."
   get_url:
-    url: "{{ossec_urlasc}}"
-    dest: "{{ extract_path }}/${ossec_version}.tar.gz.asc"
+    url: "{{ ossec_urlasc }}"
+    dest: "{{ extract_path }}/{{ ossec_version }}.tar.gz.asc"
   become: yes
 
-- name: "Download Ossec-hids archive key."
+- name: "Download OSSEC-HIDS archive key."
   get_url:
     url: "https://ossec.github.io/files/OSSEC-ARCHIVE-KEY.asc"
     dest: "{{ extract_path }}/OSSEC-ARCHIVE-KEY.asc"
