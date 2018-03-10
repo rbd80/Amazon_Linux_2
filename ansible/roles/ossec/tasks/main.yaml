@@ -16,10 +16,11 @@
     path: "{{ ossec_install_dir }}"
     state: directory
 
-- name: "Ensure tmp directory exists."
+- name: "Ensure tmp for OSSEC directory exists."
   file:
-    path: "{{ ossec_tmp_dir }}"
+    path: "{{ ossec_tmp_dir }}/{{ ossec_untar_dir }}"
     state: directory
+
 
 - name: "Download OSSEC-HIDS"
   get_url:
