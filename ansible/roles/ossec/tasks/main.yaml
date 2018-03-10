@@ -11,10 +11,21 @@
     - telnet
   become: true
 
+  - name: "Ensure OSSEC src directory exists."
+    file:
+      path: "{{ ossec_install_dir }}"
+      state: directory
+
+  - name: "Ensure tmp directory exists."
+    file:
+      path: "{{ ossec_tmp_dir }}"
+      state: directory
+
+
 - name: "Download OSSEC-HIDS"
   get_url:
-    url: "{{ ossec.url }}/{{ ossec.version }}.tar.gz"
-    dest: "{{ ossec.tmp_dir }}/{{ ossec.tarball }}"
+    url: "{{ ossec_url }}/{{ ossec_version }}.tar.gz"
+    dest: "{{ ossec_tmp_dir }}/{{ ossec_tarball }}"
 #  register: tarball
 #  tags: ossec
 

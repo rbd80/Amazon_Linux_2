@@ -1,33 +1,10 @@
 # defaults file for OSSEC
 ### OSSEC
 # Default variables for OSSEC HIDS clients
-ossec:
-  version:  2.9.3
-  tarball: ossec-hids-{{ ossec.version }}.tar.gz
-  install_dir: /var/ossec
-  untar_dir: ossec-hids-{{ ossec.version }}
-  tmp_dir: /tmp
-  url: https://github.com/ossec/ossec-hids/archive/
-  # IP Address of your OSSEC server
-  server: xxx.xxx.xxx.xxx
-
-
-
-
-
 ossec_version: 2.9.3
-
-ossec_url: https://github.com/ossec/ossec-hids/archive/{{ ossec.version }}.tar.gz
-ossec_urlasc: https://github.com/ossec/ossec-hids/releases/download/{{ossec_version}}/ossec-hids-{{ossec_version}}.tar.gz.asc
-
-
-ossec_path: /opt/ossec-hids-2.9.3.tar.gz
-ossec_path2: /opt/ossec-hids-2.9.3
-ossec_manage_agent_input: /opt/ossec_manage_agent_input.txt
-extract_path: /opt
-ossec_server_ip: 192.168.0.3 #ossec server ip address
-#j2_path: /etc/ansible/roles/ossec-client/templates/ossec_client_input.j2
-#client_key_path: /etc/ansible/roles/ossec-client/templates/client2.keys
-#remote_client_key_path: /var/ossec/etc/client2.keys
-
-#wget https://github.com/ossec/ossec-hids/archive/2.9.3.tar.gz
+ossec_tarball: ossec-hids-{{ ossec.version }}.tar.gz
+ossec_install_dir: /var/ossec
+ossec_untar_dir: ossec-hids-{{ ossec.version }}
+ossec_tmp_dir: /tmp
+ossec_url: https://github.com/ossec/ossec-hids/archive/
+ossec_server: xxx.xxx.xxx.xxx
