@@ -5,7 +5,7 @@ ossec:
   version:  2.9.3
   tarball: ossec-hids-{{ ossec.version }}.tar.gz
   install_dir: /var/ossec
-  untar_dir: ossec-hids-2.9.3
+  untar_dir: ossec-hids-{{ ossec.version }}
   tmp_dir: /tmp
   url: https://github.com/ossec/ossec-hids/archive/
   # IP Address of your OSSEC server
