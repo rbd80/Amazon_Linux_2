@@ -26,7 +26,7 @@
 
 - name: "Download OSSEC-HIDS ASC."
   get_url:
-    url: "{{ ossec.url }}/{{ ossec.tarball }}.asc"
+    url: "https://github.com/ossec/ossec-hids/releases/download/{{ossec_version}}/ossec-hids-{{ossec_version}}.tar.gz.asc"
     dest: "{{ ossec.tmp_dir }}/{{ ossec.tarball }}.asc"
 
 - name: "Download OSSEC-HIDS archive key."
