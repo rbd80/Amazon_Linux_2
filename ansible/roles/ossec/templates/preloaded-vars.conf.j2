@@ -36,7 +36,7 @@ USER_INSTALL_TYPE="agent"
 
 
 # USER_DIR defines the location to install ossec
-USER_DIR="{{ extract_path }}"
+USER_DIR="{{ ossec_install_dir }}"
 
 
 # If USER_DELETE_DIR is set to "y", the directory
@@ -80,7 +80,7 @@ USER_ENABLE_ROOTCHECK="y"
 # Specifies the IP address or hostname of the
 # ossec server. Only used on agent installations.
 # Choose only one, not both.
-USER_AGENT_SERVER_IP="{{ ossec_server_ip }}"
+USER_AGENT_SERVER_IP="{{ ossec_server }}"
 # USER_AGENT_SERVER_NAME
 
 
