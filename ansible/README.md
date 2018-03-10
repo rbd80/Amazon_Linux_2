@@ -8,7 +8,7 @@ Used the Amazon Linux CIS controls until the Linux 2 LTE version is ready.
 
 
 ## 
-
+TODO remove unnecessary packages (httpd)
 
 
 
