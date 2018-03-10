@@ -26,8 +26,6 @@
   get_url:
     url: "{{ ossec_url }}/{{ ossec_version }}.tar.gz"
     dest: "{{ ossec_tmp_dir }}/{{ ossec_tarball }}"
-#  register: tarball
-#  tags: ossec
 
 - name: "Download OSSEC-HIDS ASC."
   get_url:
