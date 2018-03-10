@@ -11,15 +11,15 @@
     - telnet
   become: true
 
-  - name: "Ensure OSSEC src directory exists."
-    file:
-      path: "{{ ossec_install_dir }}"
-      state: directory
+- name: "Ensure OSSEC src directory exists."
+  file:
+    path: "{{ ossec_install_dir }}"
+    state: directory
 
-  - name: "Ensure tmp directory exists."
-    file:
-      path: "{{ ossec_tmp_dir }}"
-      state: directory
+- name: "Ensure tmp directory exists."
+  file:
+    path: "{{ ossec_tmp_dir }}"
+    state: directory
 
 
 - name: "Download OSSEC-HIDS"
