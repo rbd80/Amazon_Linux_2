@@ -17,7 +17,7 @@ ossec:
 
 ossec_version: 2.9.3
 
-ossec_url: https://github.com/ossec/ossec-hids/archive/{{ossec_version}}.tar.gz
+ossec_url: https://github.com/ossec/ossec-hids/archive/{{ ossec.version }}.tar.gz
 ossec_urlasc: https://github.com/ossec/ossec-hids/releases/download/{{ossec_version}}/ossec-hids-{{ossec_version}}.tar.gz.asc
 
 

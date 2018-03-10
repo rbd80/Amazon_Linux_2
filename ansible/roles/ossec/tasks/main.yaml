@@ -19,7 +19,7 @@
 
 - name: "Download OSSEC-HIDS"
   get_url:
-    url: "{{ ossec.url }}/{{ ossec.tarball }}"
+    url: "{{ ossec.url }}/{{ ossec.version }}.tar.gz"
     dest: "{{ ossec.tmp_dir }}/{{ ossec.tarball }}"
   register: tarball
   tags: ossec
