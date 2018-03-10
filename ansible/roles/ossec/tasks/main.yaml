@@ -19,7 +19,7 @@
 
 - name: "Download OSSEC-HIDS"
   get_url:
-    url: "https://github.com/ossec/ossec-hids/archive/${ossec_version}.tar.gz"
+    url: "https://github.com/ossec/ossec-hids/archive/{{ossec_version}}.tar.gz"
     dest: "{{ extract_path }}/ossec-hids-{{ossec_version}}"
   become: yes
 
