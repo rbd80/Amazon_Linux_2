@@ -13,7 +13,7 @@
 
 - name: "Ensure OSSEC src directory exists."
   file:
-    path: "{{ extract_path }}/${ossec_version}}"
+    path: "{{ extract_path }}/${ossec_version}"
     state: directory
   become: yes
 
