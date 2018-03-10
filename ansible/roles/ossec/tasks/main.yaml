@@ -64,23 +64,26 @@
 - name: "Build / Install the agent"
   command: ./install.sh chdir={{ ossec_tmp_dir }}/{{ ossec_untar_dir }}
 
-
 ###########################################################################
 # CONFIGURATION                                                           #
 ###########################################################################
 
-- name: "Configure the agent ossec.conf "
-  template: dest={{ ossec.install_dir }}/etc/ossec.conf
-            owner=root
-            group=ossec
-            mode=0440
-            backup=yes
-  first_available_file:
-    - "{{ ansible_hostname }}_ossec.conf.j2"
-    - ossec.conf.j2
+- name: "Installing the ossec-agent.conf"
+  template:
+    src: templates/ossec.conf.j2
+    dest: "{{ ossec_install_dir }}/etc/ossec.conf"
   notify:
     - ossec - restart agent
   tags: ossec
+
+- name: "Configure the agent internal_options.conf"
+  template:
+    src: templates/internal_options.conf.j2
+    dest: "{{ ossec_install_dir }}/etc/internal_options.conf"
+  notify:
+    - ossec - restart agent
+  tags: ossec
+
 
 # Configure the agent internal_options.conf (override per-host if
 # needed)
