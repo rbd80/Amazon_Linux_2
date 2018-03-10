@@ -45,6 +45,10 @@
 #  args:
 #    chdir: "{{ source_dir }}"
 
+- name:  "Extract OSSEC "
+  unarchive:
+    src: {{ extract_path }}/${ossec_version}.tar.gz
+    dest: {{ extract_path }}
 
 
 #mv ${ossec_version}.tar.gz ossec-hids-${ossec_version}.tar.gz
