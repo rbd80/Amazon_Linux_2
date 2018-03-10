@@ -13,7 +13,7 @@
 
 - name: "Ensure OSSEC src directory exists."
   file:
-    path: "{{ ossec.install_dir }}"
+    path: {{ ossec.install_dir }}
     state: directory
 
 - name: "Ensure tmp directory exists."
