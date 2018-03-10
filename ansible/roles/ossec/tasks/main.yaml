@@ -30,15 +30,15 @@
 - name: "Download OSSEC-HIDS ASC."
   get_url:
     url: "https://github.com/ossec/ossec-hids/releases/download/{{ossec_version}}/ossec-hids-{{ossec_version}}.tar.gz.asc"
-    dest: "{{ ossec.tmp_dir }}/{{ ossec.tarball }}.asc"
+    dest: "{{ ossec_tmp_dir }}/{{ ossec_tarball }}.asc"
 
 - name: "Download OSSEC-HIDS archive key."
   get_url:
     url: "https://ossec.github.io/files/OSSEC-ARCHIVE-KEY.asc"
-    dest: "{{ ossec.install_dir }}/OSSEC-ARCHIVE-KEY.asc"
+    dest: "{{ ossec_install_dir }}/OSSEC-ARCHIVE-KEY.asc"
 
 - name: "Import the OSSEC Archive Key"
-  shell: gpg --import {{ ossec.install_dir }}/OSSEC-ARCHIVE-KEY.asc
+  shell: gpg --import {{ ossec_install_dir }}/OSSEC-ARCHIVE-KEY.asc
 
 # TODO Fix the checksum
 #- name: "Verify OSSEC ASC"
