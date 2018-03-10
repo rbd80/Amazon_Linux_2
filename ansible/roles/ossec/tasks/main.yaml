@@ -26,7 +26,7 @@
 - name: "Download OSSEC-HIDS ASC."
   get_url:
     url: "{{ ossec_urlasc }}"
-    dest: "{{ extract_path }}/{{ ossec_version }}.tar.gz.asc"
+    dest: "{{ extract_path }}/ossec-hids-{{ ossec_version }}.tar.gz.asc"
 
 - name: "Download OSSEC-HIDS archive key."
   get_url:
