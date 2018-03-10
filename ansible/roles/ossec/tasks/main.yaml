@@ -45,9 +45,6 @@
     src: {{ extract_path }}/${ossec_version}.tar.gz
     dest: {{ extract_path }}
 
-
-#mv ${ossec_version}.tar.gz ossec-hids-${ossec_version}.tar.gz
-
 #tar xfz ossec-hids-${ossec_version}.tar.gz
 #cd ossec-hids-${ossec_version}
 #cp /home/admin/ossec_preloaded-vars.conf ./etc/preloaded-vars.conf
