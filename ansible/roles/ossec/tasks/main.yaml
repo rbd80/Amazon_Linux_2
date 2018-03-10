@@ -4,7 +4,7 @@
 ###########################################################################
 - name: "AmazonLinux 2 | Install epel repo"
   yum:
-    name: "https://dl.fedoraproject.org/pub/epel/epel-release-latest-{{ ansible_distribution_major_version }}.noarch.rpm"
+    name: "https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm"
     state: present
 
 - name: "Install packages for OSSEC agent"
