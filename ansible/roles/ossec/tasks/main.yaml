@@ -55,7 +55,7 @@
 
 - name: "OSSEC add the preloaded config file"
   template:
-    src: /templates/preloadaed-vars.conf.j2
+    src: templates/preloadaed-vars.conf.j2
     dest: ./etc/preloaded-vars.conf
 
 
