@@ -6,13 +6,11 @@
     url: "https://cisofy.com/files/lynis-{{ lynis_version }}.tar.gz"
     dest: "{{ lynis_src_directory }}/lynis-{{ lynis_version }}.tar.gz"
     sha256sum: "{{ lynis_version_sha256sum }}"
-  become: yes
 
 - name: Ensure Lynis src directory exists.
   file:
     path: "{{ lynis_src_directory }}/lynis-{{ lynis_version }}"
     state: directory
-  become: yes
 
 - name: Extract Lynis.
   unarchive:

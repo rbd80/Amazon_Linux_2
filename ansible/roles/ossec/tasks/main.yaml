@@ -59,7 +59,7 @@
 - name: "OSSEC add the preloaded config file"
   template:
     src: templates/preloaded-vars.conf.j2
-    dest: "{{ ossec_tmp_dir }}/preloaded-vars.conf"
+    dest: "{{ ossec_tmp_dir }}/{{ ossec_untar_dir }}/etc/preloaded-vars.conf"
 
 - name: "Build / Install the agent"
   command: ./install.sh chdir={{ ossec_tmp_dir }}/{{ ossec_untar_dir }}
