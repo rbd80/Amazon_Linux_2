@@ -17,6 +17,12 @@
     state: directory
   tags: ossec
 
+- name: "Ensure tmp directory exists."
+  file:
+    path: "{{ ossec.tmp_dir }}"
+    state: directory
+  tags: ossec
+
 - name: "Download OSSEC-HIDS"
   get_url:
     url: "{{ ossec.url }}/{{ ossec.version }}.tar.gz"
