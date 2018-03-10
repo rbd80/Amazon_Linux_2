@@ -13,28 +13,30 @@
 
 - name: "Ensure OSSEC src directory exists."
   file:
-    path: "{{ extract_path }}/ossec-hids-{{ ossec_version }}"
+    path: "{{ ossec.install_dir }}"
     state: directory
-  become: yes
+  tags: ossec
 
 - name: "Download OSSEC-HIDS"
   get_url:
-    url: "{{ ossec_url }}"
-    dest: "{{ extract_path }}/ossec-hids-{{ ossec_version }}.tar.gz"
-  become: yes
+    url: "{{ ossec.url }}/{{ ossec.tarball }}"
+    dest: "{{ ossec.tmp_dir }}/{{ ossec.tarball }}"
+    mode=0600
+  register: tarball
+  tags: ossec
 
 - name: "Download OSSEC-HIDS ASC."
   get_url:
-    url: "{{ ossec_urlasc }}"
-    dest: "{{ extract_path }}/ossec-hids-{{ ossec_version }}.tar.gz.asc"
+    url: "{{ ossec.url }}/{{ ossec.tarball }}.asc"
+    dest: "{{ ossec.url }}/{{ ossec.tarball }}.asc"
 
 - name: "Download OSSEC-HIDS archive key."
   get_url:
     url: "https://ossec.github.io/files/OSSEC-ARCHIVE-KEY.asc"
-    dest: "{{ extract_path }}/OSSEC-ARCHIVE-KEY.asc"
+    dest: "{{ ossec.install_dir }}/OSSEC-ARCHIVE-KEY.asc"
 
 - name: "Import the OSSEC Archive Key"
-  shell: gpg --import {{ extract_path }}/OSSEC-ARCHIVE-KEY.asc
+  shell: gpg --import {{ ossec.install_dir }}/OSSEC-ARCHIVE-KEY.asc
 
 # TODO Fix the checksum
 #- name: "Verify OSSEC ASC"
@@ -42,8 +44,8 @@
 
 - name:  "Extract OSSEC "
   unarchive:
-    src: "{{ extract_path }}/ossec-hids-{{ ossec_version }}.tar.gz"
-    dest: "{{ extract_path }}"
+    src: "{{ ossec.url }}/{{ ossec.tarball }}"
+    dest: "{{ ossec.install_dir }}"
 
 #tar xfz ossec-hids-${ossec_version}.tar.gz
 #cd ossec-hids-${ossec_version}

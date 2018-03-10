@@ -1,4 +1,18 @@
 # defaults file for OSSEC
+### OSSEC
+# Default variables for OSSEC HIDS clients
+ossec:
+  tarball: ossec-hids-2.9.3.tar.gz
+  install_dir: /var/ossec
+  untar_dir: ossec-hids-2.9.3
+  tmp_dir: /tmp
+  url: http://www.ossec.net/files/
+  # IP Address of your OSSEC server
+  server: xxx.xxx.xxx.xxx
+
+
+
+
 
 ossec_version: 2.9.3
 
