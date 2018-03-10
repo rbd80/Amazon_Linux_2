@@ -47,7 +47,7 @@
 - name:  "Extract OSSEC "
   unarchive:
     src: "{{ ossec_tmp_dir }}/{{ ossec_tarball }}"
-    dest: "{{ ossec_tmp_dir }}/{{ ossec_untar_dir }}"
+    dest: "{{ ossec_tmp_dir }}"
 
 #tar xfz ossec-hids-${ossec_version}.tar.gz
 #cd ossec-hids-${ossec_version}
