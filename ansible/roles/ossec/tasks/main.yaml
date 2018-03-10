@@ -21,7 +21,6 @@
   get_url:
     url: "{{ ossec.url }}/{{ ossec.tarball }}"
     dest: "{{ ossec.tmp_dir }}/{{ ossec.tarball }}"
-    mode=0600
   register: tarball
   tags: ossec
 
