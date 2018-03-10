@@ -2,12 +2,6 @@
 ###########################################################################
 # INSTALLATION                                                            #
 ###########################################################################
-- name: "AmazonLinux 2 | Enable EPEL"
-  yum_repository:
-    name: epel
-    description: EPEL YUM repo
-    baseurl: https://download.fedoraproject.org/pub/epel/$releasever/$basearch/
-
 - name: "Install packages for OSSEC agent"
   action: >
     {{ ansible_pkg_mgr }} name={{ item }} state=present update_cache=yes
