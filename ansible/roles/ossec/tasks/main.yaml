@@ -36,7 +36,7 @@
   become: yes
 
 - name: "Import the OSSEC Archive Key"
-  shell: gpg --import OSSEC-ARCHIVE-KEY.asc
+  shell: gpg --import {{ extract_path }}/OSSEC-ARCHIVE-KEY.asc
   become: yes
 
 - name: "Verify OSSEC ASC"
