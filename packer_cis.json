@@ -41,11 +41,7 @@
     "ami_description": "Amazon Linux CIS with Cloudwatch Logs agent",
     "associate_public_ip_address": "true"
   }],
-  "provisioners": [{
-    "type": "file",
-    "source": "ossec/ossec_preloaded-vars.conf",
-    "destination": "/home/admin/ossec_preloaded-vars.conf"
-      },
+  "provisioners": [
       {
       "type": "shell",
       "inline": [
@@ -54,12 +50,6 @@
         "sudo pip install boto3",
         "sudo pip install ansible"
       ]},
-    {
-      "scripts": [
-        "ossec/ossec.sh"
-      ],
-      "type": "shell"
-    },
     {
       "type": "ansible-local",
       "playbook_file": "ansible/playbook.yaml",
