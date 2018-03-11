@@ -1,4 +1,0 @@
----
-- name: ossec - restart agent
-  service: name=ossec state=restarted
-  tags: ossec

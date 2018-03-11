@@ -72,17 +72,11 @@
   template:
     src: templates/ossec.conf.j2
     dest: "{{ ossec_install_dir }}/etc/ossec.conf"
-  notify:
-    - ossec - restart agent
-  tags: ossec
 
 - name: "Configure the agent internal_options.conf"
   template:
     src: templates/internal_options.conf.j2
     dest: "{{ ossec_install_dir }}/etc/internal_options.conf"
-  notify:
-    - ossec - restart agent
-  tags: ossec
 
 - name: "OSSEC - start OSSEC "
   shell: /var/ossec/bin/ossec-control start
