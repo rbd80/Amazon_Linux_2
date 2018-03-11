@@ -11,12 +11,14 @@ Used the Amazon Linux CIS controls until the Linux 2 LTE version is ready.
 TODO remove unnecessary packages (httpd)
 
 This setup only forwards the logs to AWS CloudWatch you need to run the rest of the 
-cloudformation script.  
+cloudformation script.  Ahoolo
+
 
 # Walk through on using this playbook
 -common role
-    update any packages
+    update any package
 -ossec
+
     this has multiple parts
     TODO:  Setup this up later https://medium.com/@rafalwilinski/use-aws-lambda-sns-and-node-js-to-automatically-deploy-your-static-site-from-github-to-s3-9e0987a073ec
 -cloudwatch logs role
