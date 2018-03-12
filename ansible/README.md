@@ -25,6 +25,11 @@ cloudformation script.  Ahoolo
     logforwarder to cloudwatch
 
 
+###
+https://raw.githubusercontent.com/awslabs/ami-builder-packer/master/cloudformation/pipeline.yaml
+https://raw.githubusercontent.com/awslabs/hids-cloudwatchlogs-elasticsearch-template/master/cloudformation/hids-cwl-es.template
+
+
 ```
  sudo yum install git -y
 ```

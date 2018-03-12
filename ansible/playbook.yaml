@@ -35,6 +35,9 @@
       - file: /var/ossec/logs/alerts/alerts.json
         format: "%b %d %H:%M:%S"
         group_name: HIDS_Alerts
+      - file: /var/log/lynis
+        format: "%b %d %H:%M:%S"
+        group_name: Lynis
     awslogs_loglevel: info
 
   roles:
@@ -42,5 +45,5 @@
     - ossec
     - cloudwatchlogs
     - lynis
-    #- cis
+    - cis
 
