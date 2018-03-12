@@ -1,0 +1,82 @@
+---
+###########################################################################
+# INSTALLATION                                                            #
+###########################################################################
+- name: "Install packages for OSSEC agent"
+  action: >
+    {{ ansible_pkg_mgr }} name={{ item }} state=present update_cache=yes
+  with_items:
+    - gcc
+    - httpd
+    - telnet
+  become: true
+
+- name: "Ensure OSSEC src directory exists."
+  file:
+    path: "{{ ossec_install_dir }}"
+    state: directory
+
+- name: "Ensure tmp for OSSEC directory exists."
+  file:
+    path: "{{ ossec_tmp_dir }}/{{ ossec_untar_dir }}"
+    state: directory
+
+
+- name: "Download OSSEC-HIDS"
+  get_url:
+    url: "{{ ossec_url }}/{{ ossec_version }}.tar.gz"
+    dest: "{{ ossec_tmp_dir }}/{{ ossec_tarball }}"
+
+- name: "Download OSSEC-HIDS ASC."
+  get_url:
+    url: "https://github.com/ossec/ossec-hids/releases/download/{{ossec_version}}/ossec-hids-{{ossec_version}}.tar.gz.asc"
+    dest: "{{ ossec_tmp_dir }}/{{ ossec_tarball }}.asc"
+
+- name: "Download OSSEC-HIDS archive key."
+  get_url:
+    url: "https://ossec.github.io/files/OSSEC-ARCHIVE-KEY.asc"
+    dest: "{{ ossec_install_dir }}/OSSEC-ARCHIVE-KEY.asc"
+
+- name: "Import the OSSEC Archive Key"
+  shell: gpg --import {{ ossec_install_dir }}/OSSEC-ARCHIVE-KEY.asc
+
+# TODO Fix the checksum
+#- name: "Verify OSSEC ASC"
+#  shell: gpg --verify {{ ossec_tmp_dir }}/ossec-hids-{{ ossec_version }}.tar.gz.asc {{ ossec_tmp_dir }}/{{ ossec_version }}.tar.gz
+
+- name:  "Extract OSSEC "
+  unarchive:
+    src: "{{ ossec_tmp_dir }}/{{ ossec_tarball }}"
+    dest: "{{ ossec_tmp_dir }}"
+
+#tar xfz ossec-hids-${ossec_version}.tar.gz
+#cd ossec-hids-${ossec_version}
+#cp /home/admin/ossec_preloaded-vars.conf ./etc/preloaded-vars.conf
+#cat ./etc/preloaded-vars.conf#
+#sudo bash ./install.sh
+#sudo /var/ossec/bin/ossec-control start
+
+- name: "OSSEC add the preloaded config file"
+  template:
+    src: templates/preloaded-vars.conf.j2
+    dest: "{{ ossec_tmp_dir }}/{{ ossec_untar_dir }}/etc/preloaded-vars.conf"
+
+- name: "Build / Install the agent"
+  command: ./install.sh chdir={{ ossec_tmp_dir }}/{{ ossec_untar_dir }}
+
+###########################################################################
+# CONFIGURATION                                                           #
+###########################################################################
+
+- name: "Installing the ossec-agent.conf"
+  template:
+    src: templates/ossec.conf.j2
+    dest: "{{ ossec_install_dir }}/etc/ossec.conf"
+
+- name: "Configure the agent internal_options.conf"
+  template:
+    src: templates/internal_options.conf.j2
+    dest: "{{ ossec_install_dir }}/etc/internal_options.conf"
+
+- name: "OSSEC - start OSSEC "
+  shell: /var/ossec/bin/ossec-control start

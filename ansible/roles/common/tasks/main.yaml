@@ -5,3 +5,4 @@
   yum:
     name: "*"
     state: latest
+

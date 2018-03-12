@@ -2,7 +2,6 @@
 
 - name: Install awslogs daemon
   yum: pkg=awslogs state=latest
-  become: true
 
 - name: "Configure AWS CloudWatch Logs Agent"
   template:
@@ -15,5 +14,8 @@
     dest: /etc/awslogs/awslogs.logging.conf
 
 - name: "restart after changing the file"
-  service: name=awslogsd state=restarted
-  become: true
+  systemd: name=awslogsd state=restarted
+
+#TODO Rewrite this
+- name: "Run a cron job"
+  command: echo '*/8 * * * * root sh /tmp/genalerts.sh' >> \\/etc\\/crontab; crontab /etc/crontab

@@ -29,13 +29,18 @@
       - 1.1.19
     # Cloudwatch Logs Role configuration
     logs:
-      - file: /var/log/messages
-        group_name: "system_logs"
+      - file: /var/log/syslog
+        format: "%b %d %H:%M:%S"
+        group_name: syslog
+      - file: /var/ossec/logs/alerts/alerts.json
+        format: "%b %d %H:%M:%S"
+        group_name: HIDS_Alerts
     awslogs_loglevel: info
 
   roles:
     - common
-    - lynis
+    - ossec
     - cloudwatchlogs
-    - cis
+    - lynis
+    #- cis
 

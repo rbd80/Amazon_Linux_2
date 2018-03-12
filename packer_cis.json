@@ -23,6 +23,7 @@
     "instance_type": "t2.micro",
     "force_deregister": "true",
     "force_delete_snapshot": "true",
+    "encrypt_boot": true,
     "ssh_username": "ec2-user",
     "ami_name": "{{user `ami_name` | clean_ami_name}}",
     "tags": {
@@ -38,32 +39,26 @@
       "Name": "{{user `ami_name`}}"
     },
     "ami_description": "Amazon Linux CIS with Cloudwatch Logs agent",
-    "associate_public_ip_address": "true",
-    "vpc_id": "{{user `vpc`}}",
-    "subnet_id": "{{user `subnet`}}"
+    "associate_public_ip_address": "true"
   }],
   "provisioners": [
-    {
+      {
       "type": "shell",
       "inline": [
-        "curl -O https://bootstrap.pypa.io/get-pip.py",
-        "python get-pip.py --user",
-        "export PATH=~/.local/bin:$PATH",
-        "source ~/.bash_profile",
-        "pip --version",
         "sudo easy_install pip",
+        "pip --version",
         "sudo pip install boto3",
         "sudo pip install ansible"
-      ]
-    },
+      ]},
     {
       "type": "ansible-local",
       "playbook_file": "ansible/playbook.yaml",
       "role_paths": [
-        "ansible/roles/cis",
         "ansible/roles/common",
         "ansible/roles/cloudwatchlogs",
-        "ansible/roles/lynis"
+        "ansible/roles/lynis",
+        "ansible/roles/ossec",
+        "ansible/roles/cis"
       ]
     },
     {
