@@ -2,60 +2,17 @@
 # Path to the CloudWatch Logs agent's state file. The agent uses this file to maintain
 # client side state across its executions.
 state_file = /var/lib/awslogs/agent-state
-
-## A batch is buffered for buffer-duration amount of time or 32KB of log events.
-## Defaults to 5000 ms and its minimum value is 5000 ms.
-buffer_duration = 5000
-
-## Encoding of file
-encoding = utf-8
-
-# Use 'end_of_file' to start reading from the end of the file.
-# Use 'start_of_file' to start reading from the beginning of the file.
-initial_position = start_of_file
+logging_config_file = /etc/awslogs/awslogs.logging.conf
 
 {% for log in logs|list + extra_logs|list %}
 [{{ log.file }}]
-
-{% if log.format is defined %}
-datetime_format = {{ log.format }}
-{% endif %}
-file = {{ log.file | default('/var/log/syslog') }}
-
-log_group_name = {{ log.group_name }} | default(log.file) }}
-
+log_group_name = {{ log.group_name }}
 log_stream_name = {instance_id}
-
+datetime_format = {{ log.format }}
+time_zone = LOCAL
+file = {{ log.file }}
+initial_position = start_of_file
+encoding = utf-8
+buffer_duration = 5000
 {% endfor %}
-
-
-
-
-{% for log in aws.cloudwatch.logs %}
-[{{ log.name }}]
-file = {{ log.file | default('/var/log/syslog') }}
-datetime_format = {{ log.datetime_format | default('%b %d %H:%M:%S') }}
-buffer_duration = {{ log.buffer_duration | default('5000') }}
-log_stream_name = {{'{'+log.log_stream_name | default('hostname')+'}'}}
-initial_position = {{ log.initial_position | default('start_of_file') }}
-log_group_name = {{ log.log_group_name | default(log.file) }}
-encoding = {{ log.encoding | default('utf-8') }}
-multi_line_start_pattern = {{ log.multi_line_start_pattern | default("^[^\s]") }}
-
-{% endfor%}
-
-
-aws:
-  cloudwatch:
-    profile: default
-    logs:
-      - name: syslog
-        file: /var/log/syslog
-        datetime_format: "%b %d %H:%M:%S"
-        buffer_duration: 5000
-        log_stream_name: hostname
-        initial_position: start_of_file
-        log_group_name: /var/log/syslog
-        encoding: utf-8
-  profiles: []
 

@@ -13,7 +13,28 @@ TODO remove unnecessary packages (httpd)
 This setup only forwards the logs to AWS CloudWatch you need to run the rest of the 
 cloudformation script.  Ahoolo
 
-
+This requires an instance profile with the following to send logs to AWS Cloudwatch
+```
+{
+"Version": "2012-10-17",
+"Statement": [
+  {
+    "Effect": "Allow",
+    "Action": [
+      "logs:CreateLogGroup",
+      "logs:CreateLogStream",
+      "logs:PutLogEvents",
+      "logs:DescribeLogStreams"
+    ],
+    "Resource": [
+      "arn:aws:logs:*:*:*"
+    ]
+  }
+ ]
+}
+```
+  Ref 
+  https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/AgentReference.html
 # Walk through on using this playbook
 -common role
     update any package
@@ -25,6 +46,11 @@ cloudformation script.  Ahoolo
     logforwarder to cloudwatch
 
 
+
+
+TODO:
+Add
+ https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/set-time.html
 ###
 https://raw.githubusercontent.com/awslabs/ami-builder-packer/master/cloudformation/pipeline.yaml
 https://raw.githubusercontent.com/awslabs/hids-cloudwatchlogs-elasticsearch-template/master/cloudformation/hids-cwl-es.template

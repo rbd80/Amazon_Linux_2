@@ -46,3 +46,8 @@
     user: root
     job: cd {{ lynis_dest_directory }}/lynis && ./lynis audit system --auditor "automated" --cronjob > {{ lynis_log_directory }}/report-$(hostname).$(date +%Y%m%d).txt && mv /var/log/lynis.log {{ lynis_log_directory }}/report-log-$(hostname).$(date +%Y%m%d).log && mv /var/log/lynis-report.dat {{ lynis_log_directory }}/report-data-$(hostname).$(date +%Y%m%d).txt >/dev/null 2>&1
   when: lynis_cron
+
+#- name: "Run Lynis "
+#  shell: sh ./lynis audit system -c -Q --auditor "The Auditor"
+#  args:
+#    chdir: "{{ lynis_dest_directory }}/lynis/"
