@@ -1,0 +1,19 @@
+#TODO Rewrite this
+#- name: "Run a cron job"
+#  command: echo '*/8 * * * * root sh /tmp/genalerts.sh' >> \\/etc\\/crontab; crontab /etc/crontab
+
+
+- name: "Get the Bad agents scripts"
+  template:
+    src: templates/genalerts.sh.j2
+    dest: /tmp/genalerts.sh
+
+- name: "Run script to test alerts"
+  cron:
+    name: Run Bad agent scripts
+    cron_file: genalerts.sh
+    minute: 0
+    hour: 12
+    weekday: 0
+    user: root
+    job: "sh /tmp/genalerts.sh"

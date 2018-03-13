@@ -7,38 +7,50 @@
     {{ ansible_pkg_mgr }} name={{ item }} state=present update_cache=yes
   with_items:
     - gcc
-    - httpd
-    - telnet
-  become: true
+#    - httpd
+#    - telnet
 
-- name: "Ensure OSSEC src directory exists."
+- name: "Ensure OSSEC src / tmp directories exist"
+  stat:
+    path: "{{item}}"
+  register: folder_stats
+  with_items:
+  - ["{{ ossec_install_dir }}", "{{ ossec_tmp_dir }}/{{ ossec_untar_dir }}"]
+
+- name: "Create OSSEC src / tmp directories."
   file:
-    path: "{{ ossec_install_dir }}"
+    path: "{{item.item}}"
     state: directory
-
-- name: "Ensure tmp for OSSEC directory exists."
-  file:
-    path: "{{ ossec_tmp_dir }}/{{ ossec_untar_dir }}"
-    state: directory
-
+    mode: 0755
+    group: root
+    owner: root
+  when: item.stat.exists == false
+  register: installed
+  with_items:
+  - "{{folder_stats.results}}"
 
 - name: "Download OSSEC-HIDS"
   get_url:
     url: "{{ ossec_url }}/{{ ossec_version }}.tar.gz"
-    dest: "{{ ossec_tmp_dir }}/{{ ossec_tarball }}"
+    dest: "{{ ossec_tmp_dir }}{{ ossec_tarball }}"
+  when: installed.changed
+  register: tarball
 
 - name: "Download OSSEC-HIDS ASC."
   get_url:
     url: "https://github.com/ossec/ossec-hids/releases/download/{{ossec_version}}/ossec-hids-{{ossec_version}}.tar.gz.asc"
     dest: "{{ ossec_tmp_dir }}/{{ ossec_tarball }}.asc"
+  when: tarball.changed is defined and tarball.changed
 
 - name: "Download OSSEC-HIDS archive key."
   get_url:
     url: "https://ossec.github.io/files/OSSEC-ARCHIVE-KEY.asc"
     dest: "{{ ossec_install_dir }}/OSSEC-ARCHIVE-KEY.asc"
+  when: tarball.changed is defined and tarball.changed
 
 - name: "Import the OSSEC Archive Key"
   shell: gpg --import {{ ossec_install_dir }}/OSSEC-ARCHIVE-KEY.asc
+  when: tarball.changed is defined and tarball.changed
 
 # TODO Fix the checksum
 #- name: "Verify OSSEC ASC"
@@ -48,21 +60,18 @@
   unarchive:
     src: "{{ ossec_tmp_dir }}/{{ ossec_tarball }}"
     dest: "{{ ossec_tmp_dir }}"
-
-#tar xfz ossec-hids-${ossec_version}.tar.gz
-#cd ossec-hids-${ossec_version}
-#cp /home/admin/ossec_preloaded-vars.conf ./etc/preloaded-vars.conf
-#cat ./etc/preloaded-vars.conf#
-#sudo bash ./install.sh
-#sudo /var/ossec/bin/ossec-control start
+  when: tarball.changed is defined and tarball.changed
 
 - name: "OSSEC add the preloaded config file"
   template:
     src: templates/preloaded-vars.conf.j2
     dest: "{{ ossec_tmp_dir }}/{{ ossec_untar_dir }}/etc/preloaded-vars.conf"
+  when: tarball.changed is defined and tarball.changed
 
 - name: "Build / Install the agent"
   command: ./install.sh chdir={{ ossec_tmp_dir }}/{{ ossec_untar_dir }}
+  when: (installed.changed is defined and installed.changed) or
+        (tarball.changed is defined and tarball.changed)
 
 ###########################################################################
 # CONFIGURATION                                                           #
@@ -72,11 +81,44 @@
   template:
     src: templates/ossec.conf.j2
     dest: "{{ ossec_install_dir }}/etc/ossec.conf"
+  when: (installed.changed is defined and installed.changed) or
+        (tarball.changed is defined and tarball.changed)
 
 - name: "Configure the agent internal_options.conf"
   template:
     src: templates/internal_options.conf.j2
     dest: "{{ ossec_install_dir }}/etc/internal_options.conf"
+  when: (installed.changed is defined and installed.changed) or
+        (tarball.changed is defined and tarball.changed)
+
+- name: "Service Unit"
+  template:
+    src: templates/ossec@.service.j2
+    dest: "/etc/systemd/system/ossec@.service"
+
+- name: "Create Symlink"
+  shell: "systemctl enable ossec@dbd ossec@agentlessd ossec@csyslogd ossec@maild ossec@execd ossec@analysisd ossec@logcollector ossec@remoted ossec@syscheckd ossec@monitord"
+
+- name: "Make sure a service is running"
+  systemd:
+    state: started
+    name: "{{ item }}"
+  with_items: "{{ ossec_pkgs }}"
+
+###########################################################################
+# Start Service                                                           #
+###########################################################################
+
 
 - name: "OSSEC - start OSSEC "
   shell: /var/ossec/bin/ossec-control start
+  when: (installed.changed is defined and installed.changed) or
+        (tarball.changed is defined and tarball.changed)
+
+- name: Make sure a service is running
+  systemd: state=started name=httpd
+
+- name: "Clean your mess"
+  yum:
+    name: gcc
+    state: absent

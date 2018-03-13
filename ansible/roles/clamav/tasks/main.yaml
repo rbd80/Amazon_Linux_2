@@ -1,0 +1,240 @@
+---
+
+- name: "Install the repository"
+  yum:
+    name: http://dl.fedoraproject.org/pub/epel/7/x86_64/Packages/e/epel-release-7-11.noarch.rpm
+    state: present
+
+- name: Install ClamAV package
+  package:
+    name: "{{ item }}"
+  with_items: "{{ clamav_pkgs }}"
+  notify:
+    - Restart Clamd service
+  tags:
+    - clamav_pkg
+
+- name: Check whether SELinux is enabled
+  command: sestatus
+  failed_when: false
+  changed_when: false
+  register: clamav_selinux_check_result
+  tags:
+    - clamav_selinux
+
+- name: Configure SELinux for clamav
+  seboolean:
+    name: "{{ item }}"
+    state: yes
+    persistent: yes
+  with_items:
+    - antivirus_can_scan_system
+    - antivirus_use_jit
+  when: >
+    clamav_selinux_check_result is defined and
+    clamav_selinux_check_result.stdout.find('disabled') == -1
+  tags:
+    - clamav_selinux
+
+- name: Configure Clamd
+  template:
+    src: clamd.conf.j2
+    dest: "{{ clamav_clamd_file }}"
+  notify:
+    - Restart Clamd service
+  tags:
+    - clamav_config
+
+- name: Create Clamd Service directory
+  file:
+    path: "{{ clamav_clamd_daemon_file | dirname }}"
+    group: root
+    mode: 0755
+    owner: root
+    state: directory
+  when: >
+    ansible_service_mgr == 'systemd'
+  tags:
+    - clamav_config
+
+- name: Configure Clamd Service
+  template:
+    src: clamd.defaults.j2
+    dest: "{{ clamav_clamd_daemon_file }}"
+  notify:
+    - Restart Clamd service
+  tags:
+    - clamav_config
+
+- name: Configure FreshClam
+  template:
+    src: freshclam.conf.j2
+    dest: "{{ clamav_freshclam_file }}"
+  tags:
+    - clamav_config
+
+- name: Check if the log directories exist
+  file:
+    path: "{{ item | dirname }}"
+    state: directory
+    mode: "{{ clamav_log_dir_mode }}"
+    owner: "{{ clamav_user }}"
+    group: "{{ clamav_group }}"
+  when: item | dirname != '/var/log'
+  with_items:
+    - "{{ clamav_clamd_log_file }}"
+    - "{{ clamav_freshclam_update_log_file }}"
+  tags:
+    - clamav_log
+
+- name: Check if Clamd log file exists
+  stat:
+    path: "{{ clamav_clamd_log_file }}"
+  register: clamav_clamd_log_check_result
+  failed_when: false
+  changed_when: false
+  tags:
+    - clamav_log
+
+- name: Create Clamd log file if it doesn't exist
+  file:
+    path: "{{ clamav_clamd_log_file }}"
+    state: touch
+    mode: "{{ clamav_log_file_mode }}"
+    owner: "{{ clamav_user }}"
+    group: "{{ clamav_group }}"
+  when: >
+    clamav_clamd_log_check_result is defined and (
+        not clamav_clamd_log_check_result.stat.exists or
+        clamav_clamd_log_check_result.stat.pw_name != clamav_user or
+        clamav_clamd_log_check_result.stat.gr_name != clamav_group
+    )
+  tags:
+    - clamav_log
+
+- name: Check if ClamScan log file exists
+  stat:
+    path: "{{ clamav_scan_log_file }}"
+  register: clamav_scan_log_check_result
+  failed_when: false
+  changed_when: false
+  tags:
+    - clamav_log
+
+- name: Create ClamScan log file if it doesn't exist
+  file:
+    path: "{{ clamav_scan_log_file }}"
+    state: touch
+    mode: "{{ clamav_log_file_mode }}"
+    owner: "{{ clamav_user }}"
+    group: "{{ clamav_group }}"
+  when: >
+    clamav_scan_log_check_result is defined and (
+        not clamav_scan_log_check_result.stat.exists or
+        clamav_scan_log_check_result.stat.pw_name != clamav_user or
+        clamav_scan_log_check_result.stat.gr_name != clamav_group
+    )
+  tags:
+    - clamav_log
+
+- name: Check if FreshClam log file exists
+  stat:
+    path: "{{ clamav_freshclam_update_log_file }}"
+  register: clamav_freshclam_log_check_result
+  failed_when: false
+  changed_when: false
+  tags:
+    - clamav_log
+
+- name: Create FreshClam log file if it doesn't exist
+  file:
+    path: "{{ clamav_freshclam_update_log_file }}"
+    state: touch
+    mode: "{{ clamav_log_file_mode }}"
+    owner: "{{ clamav_user }}"
+    group: "{{ clamav_group }}"
+  when: >
+    clamav_freshclam_log_check_result is defined and (
+        not clamav_freshclam_log_check_result.stat.exists or
+        clamav_freshclam_log_check_result.stat.pw_name != clamav_user or
+        clamav_freshclam_log_check_result.stat.gr_name != clamav_group
+    )
+  tags:
+    - clamav_log
+
+- name: Check if the DB directories exist
+  file:
+    path: "{{ clamav_clamd_database_directory }}"
+    state: directory
+    mode: "{{ clamav_db_dir_mode }}"
+    owner: "{{ clamav_user }}"
+    group: "{{ clamav_group }}"
+  tags:
+    - clamav_db
+
+- name: Check the age of the ClamAV DB
+  shell: >
+    if (( $(date "+%s") - $(date -d "$(
+        sigtool -i {{ clamav_clamd_database_directory }}/daily.cvd 2>/dev/null | grep -Po '(?<=^Build time: ).*' ||
+        sigtool -i {{ clamav_clamd_database_directory }}/daily.cld 2>/dev/null | grep -Po '(?<=^Build time: ).*' ||
+        echo '2016-01-01')" "+%s") > {{ clamav_db_age }} * 86400 )); then
+      exit 1;
+    else
+      exit 0;
+    fi
+  register: clamav_db_age_check_result
+  failed_when: false
+  changed_when: false
+  tags:
+    - clamav_db
+
+- name: Update ClamAV DB
+  # First delete all DBs if the daily DB is older than 90 days because the
+  # mirror server keeps only last 90 daily files.
+  shell: >
+    if (( $(date "+%s") - $(date -d "$(
+        sigtool -i {{ clamav_clamd_database_directory }}/daily.cvd 2>/dev/null | grep -Po '(?<=^Build time: ).*' ||
+        sigtool -i {{ clamav_clamd_database_directory }}/daily.cld 2>/dev/null | grep -Po '(?<=^Build time: ).*' ||
+        echo '2016-01-01')" "+%s") > 90 )); then
+      rm -f {{ clamav_clamd_database_directory }}/*.c?d;
+    fi;
+    {{ clamav_db_update_command }}
+  when: >
+    clamav_db_update_run and
+    clamav_db_age_check_result.rc or
+    clamav_db_update_force
+  tags:
+    - clamav_db
+
+- name: Setup Clamd Scan cron job
+  cron:
+    name: Clamd Scan
+    special_time: "{{ clamav_scan_cron_time }}"
+    job: "{{ clamav_scan_cron_job }}"
+  when: clamav_scan_cron == true
+  tags:
+    - clamav_cron
+
+- name: Setup FreshClam cron job
+  cron:
+    name: FreshClam
+    special_time: "{{ clamav_freshclam_cron_time }}"
+    job: "{{ clamav_freshclam_cron_job }}"
+  when: clamav_freshclam_cron == true
+  tags:
+    - clamav_cron
+
+- name: Enable ClamAV service
+  service:
+    name: "{{ clamav_service }}"
+    enabled: yes
+  tags:
+    - clamav_service
+
+- name: Start ClamAV service
+  service:
+    name: "{{ clamav_service }}"
+    state: started
+  register: clamav_service_started
+  tags:
+    - clamav_service

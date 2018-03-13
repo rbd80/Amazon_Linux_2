@@ -1,6 +1,6 @@
 ---
 
-- name: Install awslogs daemon
+- name: "Install awslogs daemon"
   yum: pkg=awslogs state=latest
 
 - name: "Configure AWS CloudWatch Logs Agent"
@@ -13,9 +13,10 @@
     src: awslogs.logging.conf.j2
     dest: /etc/awslogs/awslogs.logging.conf
 
-- name: "restart after changing the file"
-  systemd: name=awslogsd state=restarted
+- name: "Ensure awslogs launches on boot"
+  command: systemctl enable awslogsd.service
 
-#TODO Rewrite this
-- name: "Run a cron job"
-  command: echo '*/8 * * * * root sh /tmp/genalerts.sh' >> \\/etc\\/crontab; crontab /etc/crontab
+- name: "Make sure a service is running"
+  systemd:
+    state: restarted
+    name: "awslogsd"

@@ -3,8 +3,13 @@
 # Default variables for OSSEC HIDS clients
 ossec_version: 2.9.3
 ossec_tarball: ossec-hids-{{ ossec_version }}.tar.gz
-ossec_install_dir: /var/ossec
+ossec_install_dir: /var/ossec/
 ossec_untar_dir: ossec-hids-{{ ossec_version }}
-ossec_tmp_dir: /tmp
+ossec_tmp_dir: /tmp/
 ossec_url: https://github.com/ossec/ossec-hids/archive/
 ossec_server: xxx.xxx.xxx.xxx
+
+# Package to be installed (explicit version can be specified here)
+ossec_pkgs: "{{
+  ['ossec@execd', 'ossec@analysisd', 'ossec@logcollector', 'ossec@maild', 'ossec@syscheckd', 'ossec@monitord']
+  }}"

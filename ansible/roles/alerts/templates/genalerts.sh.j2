@@ -1,0 +1,15 @@
+#/bin/bash
+    sleep $[ ( $RANDOM % 20 )  + 1 ]s && curl localhost/readme.txt?
+    sleep $[ ( $RANDOM % 10 )  + 1 ]s && sudo su -c whoami apache
+    sleep $[ ( $RANDOM % 50 )  + 1 ]s && sudo -u ec2-user cat /etc/shadow
+    sleep $[ ( $RANDOM % 10 )  + 1 ]s && sudo yum install -y htop
+    sleep $[ ( $RANDOM % 80 )  + 1 ]s && ssh admin@localhost echo '`whoami`'
+    sleep $[ ( $RANDOM % 10 )  + 1 ]s && curl localhost/~
+    sleep $[ ( $RANDOM % 10 )  + 1 ]s && telnet localhost 22 < /tmp
+    sleep $[ ( $RANDOM % 30 )  + 1 ]s && curl localhost/readme.txt?
+    sleep $[ ( $RANDOM % 18 )  + 1 ]s && sudo su -c whoami bob
+    sleep $[ ( $RANDOM % 20 )  + 1 ]s && sudo yum remove -y htop*
+    sleep $[ ( $RANDOM % 25 )  + 1 ]s && curl localhost
+    sleep $[ ( $RANDOM % 45 )  + 1 ]s && ssh admin@localhost echo '`whoami`'
+    sleep $[ ( $RANDOM % 30 )  + 1 ]s && sudo cat /etc/passwd
+    sleep $[ ( $RANDOM % 15 )  + 1 ]s && telnet localhost 22 < /tmp

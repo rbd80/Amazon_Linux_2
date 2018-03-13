@@ -14,7 +14,7 @@ phases:
       - ./packer validate packer_cis.json
   build:
     commands:
-      - echo "Building HashiCorp Packer template"
+      - echo "Building HashiCorp Packer templates"
       - ./packer build -color=false packer_cis.json | tee build.log
   post_build:
     commands:

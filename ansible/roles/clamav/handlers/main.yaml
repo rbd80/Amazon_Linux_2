@@ -1,0 +1,9 @@
+---
+
+- name: Restart Clamd service
+  service:
+    name: "{{ clamav_service }}"
+    state: restarted
+  when: >
+    clamav_service_started is not defined or
+    not clamav_service_started.changed

@@ -8,9 +8,11 @@ orchestrate the entire process. The following areas are covered within this repo
 
 - CIS controls for Amazon Linux 2 LTE
 - CloudWatch Logs Agent - Forwarder
-
 - OSSEC for HIDS (host-based intrusion detection), log monitoring, and Security Incident Management (SIM)/Security Information and Event Management (SIEM)
-- ClamAV for antivirus engine for detecting trojans, viruses, malware & other malicious threats
+
+
+#- Moving to Kube cluster 
+ ClamAV for antivirus engine for detecting trojans, viruses, malware & other malicious threats
 
 
 ![Builder Diagram](images/BriarV2.png)
@@ -27,8 +29,8 @@ orchestrate the entire process. The following areas are covered within this repo
 │   └── pipeline.yaml
 ├── packer_cis.json                         <-- Packer template for Pipeline
 ```
-
-![Details on the security config](ansible/README.md)
+## What is logged and monitored
+[Details on the security config](ansible/README.md)
 
 ## Cloudformation template
 Cloudformation will create the following resources as part of the AMI Builder for Packer:
@@ -40,8 +42,6 @@ Cloudformation will create the following resources as part of the AMI Builder fo
     + Amazon SNS Topic - AMI Builds Notification via subscribed email
     + Amazon Cloudwatch Events Rule - Custom Event for AMI Builder that will trigger SNS upon AMI completion
     + AWS IAM - With all of the needed Packer permissions
-
-
 
 ## HOWTO
 

@@ -1,28 +1,18 @@
 [general]
+# Path to the CloudWatch Logs agent's state file. The agent uses this file to maintain
+# client side state across its executions.
 state_file = /var/lib/awslogs/agent-state
-buffer_duration = 5000
-encoding = utf-8
-multi_line_start_pattern = default("^[^\s]")
-initial_position = start_of_file
-
-
-
-
-
+logging_config_file = /etc/awslogs/awslogs.logging.conf
 
 {% for log in logs|list + extra_logs|list %}
 [{{ log.file }}]
-
-{% if log.format is defined %}
-
-datetime_format = {{ log.format }}
-
-{% endif %}
-
-file = {{ log.file | default('/var/log/syslog') }}
-
-log_group_name = {{ log.group_name }} | default(log.file) }}
-
+log_group_name = {{ log.group_name }}
 log_stream_name = {instance_id}
-
+datetime_format = {{ log.format }}
+time_zone = LOCAL
+file = {{ log.file }}
+initial_position = start_of_file
+encoding = utf-8
+buffer_duration = 5000
 {% endfor %}
+

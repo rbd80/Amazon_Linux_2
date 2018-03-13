@@ -1,8 +1,63 @@
 ---
 
-# Ensure all packages have been patched
-- name: upgrade all packages
+- name: "Ensure all packages have been patched"
   yum:
     name: "*"
     state: latest
 
+- name: "Set timezone to America/New_York"
+  timezone:
+    name: America/New_York
+
+#- name: "Stop AWS System Manager, OSSEC had lot of errors with it"
+#  systemd:
+#    name: amazon-ssm-agent
+#    state: stopped
+
+- name: "Remove AWS System Manager, OSSEC had lot of errors with it"
+  yum:
+    name: amazon-ssm-agent.x86_64
+    state: absent
+
+
+# https://forums.aws.amazon.com/thread.jspa?messageID=821176&tstart=0
+- name: "Packages for SELinux and work around"
+  action: >
+    {{ ansible_pkg_mgr }} name={{ item }} state=present update_cache=yes
+  with_items:
+    - policycoreutils
+    - selinux-policy-targeted
+    - policycoreutils-python
+    - libselinux-python
+
+- name: "Edit grub2 default kernel options to start SELinux"
+  command: sed -i 's/GRUB_CMDLINE_LINUX_DEFAULT=\"console=tty0 console=ttyS0,115200n8 /GRUB_CMDLINE_LINUX_DEFAULT=\"console=ttyS0,115200n8 console=tty0 selinux=1 security=selinux enforcing=1 /g' /etc/default/grub
+
+- name: "Delete selinux"
+  file:
+    path: /etc/sysconfig/selinux
+    state: absent
+
+- name: "Symlink selinux"
+  file:
+    src: /etc/selinux/config
+    dest: /etc/sysconfig/selinux
+    state: link
+
+- name: "Make changes to config"
+  command: sed -i 's/SELINUX=disabled/SELINUX=enforcing/g' /etc/selinux/config
+
+- name: "Touch Auto relabel"
+  file:
+    path: /.autorelabel
+    state: touch
+
+- name: "Check to see if grub has been configured"
+  stat: path=/etc/grub2.cfg
+  register: grub_config
+
+- name: "Write grub configuration file"
+  command: grub2-mkconfig -o /etc/grub2.cfg
+  when: grub_config.stat.exists == False
+
+# cat /etc/os-release && sestatus
