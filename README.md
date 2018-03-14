@@ -1,15 +1,13 @@
 # AWS Amazon Linux 2 Harden
 
-
-
 This Packer AMI Builder creates a new AMI out of the latest Amazon Linux AMI, and also provides a cloudformation template that leverages AWS CodePipeline to 
 orchestrate the entire process. The following areas are covered within this repo
-
 
 - CIS controls for Amazon Linux 2 LTE
 - CloudWatch Logs Agent - Forwarder
 - OSSEC for HIDS (host-based intrusion detection), log monitoring, and Security Incident Management (SIM)/Security Information and Event Management (SIEM)
-
+#- Moving to Kube cluster 
+ ClamAV for antivirus engine for detecting trojans, viruses, malware & other malicious threats
 
 #- Moving to Kube cluster 
  ClamAV for antivirus engine for detecting trojans, viruses, malware & other malicious threats
@@ -43,7 +41,6 @@ Cloudformation will create the following resources as part of the AMI Builder fo
     + AWS IAM - With all of the needed Packer permissions
 
 ## Required
-
 **Before you start**
 TODO: Use check script
 * Install [GIT](https://git-scm.com/downloads) if you don't have it

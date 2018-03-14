@@ -9,7 +9,7 @@
     - gcc
     - httpd
     - telnet
-
+    
 - name: "Ensure OSSEC src / tmp directories exist"
   stat:
     path: "{{item}}"
