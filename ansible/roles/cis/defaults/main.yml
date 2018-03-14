@@ -123,7 +123,7 @@ cis_umask_default: "027"
 cis_umask_shell_files:
 - /etc/bashrc
 - /etc/profile
-- /etc/profile.d/custom.sh
+#- /etc/profile.d/custom.sh
 
 # 5.5
 cis_wheel_group_members: "root"

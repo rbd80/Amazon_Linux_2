@@ -24,6 +24,7 @@
     # Possible Anisble errors: https://github.com/anthcourtney/ansible-role-cis-amazon-linux/issues/33
       - 3.6.2
       - 5.3.3
+    #https://nordeus.com/blog/engineering/managing-iptables-with-ansible-the-easy-way/
     #Donovan is lazy and does not want use pwd
       - 5.2.9
     cis_pass_max_days: 45
