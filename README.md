@@ -6,8 +6,6 @@ orchestrate the entire process. The following areas are covered within this repo
 - CIS controls for Amazon Linux 2 LTE
 - CloudWatch Logs Agent - Forwarder
 - OSSEC for HIDS (host-based intrusion detection), log monitoring, and Security Incident Management (SIM)/Security Information and Event Management (SIEM)
-#- Moving to Kube cluster 
- ClamAV for antivirus engine for detecting trojans, viruses, malware & other malicious threats
 
 #- Moving to Kube cluster 
  ClamAV for antivirus engine for detecting trojans, viruses, malware & other malicious threats
@@ -48,13 +46,15 @@ TODO: Use check script
 * [Configured AWS CLI and Git](http://docs.aws.amazon.com/codecommit/latest/userguide/setting-up-https-unixes.html) to connect to AWS CodeCommit repositories
 
 ## Installation 
-    1. Login to the AWS console with enough permisssions to creatae a cloudformataion template
+    1. Login to the AWS console with enough permisssions to create a cloudformation template
     2. Copy the template from [Cloudformation Template](cloudformation/pipeline.yaml)
     3. Paste in AWS Cloudformation and exec.
     4. TODO: Fix this.  Manual switch codecommit to GITHUB
-    5. Git Commet on codebase and AWS pipeline will start
+    5. Git Commit on codebase and AWS pipeline will start
 
-
+## Security Controls inherited from this operating system
+    1.
+    
 
 TODO:
 - Replace the entire cloudformation with terraform script.

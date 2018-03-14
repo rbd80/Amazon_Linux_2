@@ -14,9 +14,6 @@
     ## This can break  automation; ignoring it as there are stronger mechanisms than that
       - 3.4.2
       - 3.4.3
-    # Problem with PAM  https://github.com/ansible/ansible/issues/35629
-    #  - 5.3.2
-    #  - 5.3.3
     # Cloudwatch Logs will be used instead of Rsyslog/Syslog-ng
     ## Same would be true if any other software that doesn't support Rsyslog/Syslog-ng mechanisms
       - 4.2.1.4
@@ -24,7 +21,6 @@
       - 4.2.2.5
     # Autofs is no longer installed and we need to ignore it or else will fail
       - 1.1.19
-
     #Donovan is lazy and does not want use pwd
       - 5.2.9
     cis_pass_max_days: 45
@@ -56,6 +52,7 @@
     - cis
     - cloudwatchlogs
     - lynis
+    - alerts
 
 
 

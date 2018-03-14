@@ -43,7 +43,7 @@
     src: /etc/selinux/config
     dest: /etc/sysconfig/selinux
     state: link
-
+#TODO rewrite this lazy....
 - name: "Make changes to config"
   command: sed -i 's/SELINUX=disabled/SELINUX=enforcing/g' /etc/selinux/config
 
