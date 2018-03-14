@@ -1,15 +1,13 @@
 # AWS Amazon Linux 2 Harden
 
-
-
 This Packer AMI Builder creates a new AMI out of the latest Amazon Linux AMI, and also provides a cloudformation template that leverages AWS CodePipeline to 
 orchestrate the entire process. The following areas are covered within this repo
-
 
 - CIS controls for Amazon Linux 2 LTE
 - CloudWatch Logs Agent - Forwarder
 - OSSEC for HIDS (host-based intrusion detection), log monitoring, and Security Incident Management (SIM)/Security Information and Event Management (SIEM)
-
+#- Moving to Kube cluster 
+ ClamAV for antivirus engine for detecting trojans, viruses, malware & other malicious threats
 
 #- Moving to Kube cluster 
  ClamAV for antivirus engine for detecting trojans, viruses, malware & other malicious threats
@@ -17,11 +15,10 @@ orchestrate the entire process. The following areas are covered within this repo
 
 ![Builder Diagram](images/BriarV2.png)
 
-
 ```bash
 ├── ansible
 │   ├── playbook.yaml                       <-- Ansible playbook file
-│   ├── requirements.yaml                   <-- Ansible Galaxy requirements containing additional Roles to be used (CIS, Cloudwatch Logs)
+│   ├── requirements.yaml                   <-- RemovedAnsible Galaxy requirements containing additional Roles to be used (CIS, Cloudwatch Logs)
 │   └── roles
 │       ├── common                          <-- Upgrades all packages through ``yum``
 ├── buildspec.yml                           <-- CodeBuild spec 
@@ -43,8 +40,7 @@ Cloudformation will create the following resources as part of the AMI Builder fo
     + Amazon Cloudwatch Events Rule - Custom Event for AMI Builder that will trigger SNS upon AMI completion
     + AWS IAM - With all of the needed Packer permissions
 
-## HOWTO
-
+## Required
 **Before you start**
 TODO: Use check script
 * Install [GIT](https://git-scm.com/downloads) if you don't have it
@@ -60,13 +56,16 @@ TODO: Use check script
 
 
 
-
+TODO:
+- Replace the entire cloudformation with terraform script.
+- Add more Invokes conditions, currently only a commit but add version updates (lambda function)
 
 https://s3-external-1.amazonaws.com/cf-templates-h7iqxoi3arkm-us-east-1/20180693MP-WorkingAMIPacker72xwrtvyjcj
 
 ### Reference 
-https://aws.amazon.com/blogs/devops/how-to-create-an-ami-builder-with-aws-codebuild-and-hashicorp-packer/
-https://github.com/awslabs/ami-builder-packer
+- [Amazon Blog](https://aws.amazon.com/blogs/devops/how-to-create-an-ami-builder-with-aws-codebuild-and-hashicorp-packer/)
+- [GITHUB Source for Amazon Blog](https://github.com/awslabs/ami-builder-packer) 
+- [Amazon Cloudformation template](https://s3-external-1.amazonaws.com/cf-templates-h7iqxoi3arkm-us-east-1/20180693MP-WorkingAMIPacker72xwrtvyjcj) 
 ### Technologies
 * [AWS CloudFormation](https://aws.amazon.com/cloudformation/) gives developers and systems administrators an easy way to create and manage a collection of related AWS resources, provisioning and updating them in an orderly and predictable fashion.
 * [Amazon CloudWatch Events](https://docs.aws.amazon.com/AmazonCloudWatch/latest/events/WhatIsCloudWatchEvents.html) enables you to react selectively to events in the cloud and in your applications. Specifically, you can create CloudWatch Events rules that match event patterns, and take actions in response to those patterns.
@@ -74,10 +73,6 @@ https://github.com/awslabs/ami-builder-packer
 * [Amazon SNS](https://aws.amazon.com/sns/) is a fast, flexible, fully managed push notification service that lets you send individual messages or to fan out messages to large numbers of recipients. Amazon SNS makes it simple and cost-effective to send push notifications to mobile device users or email recipients. The service can even send messages to other distributed services.
 * [Ansible](https://www.ansible.com/) is a simple IT automation system that handles configuration management, application deployment, cloud provisioning, ad-hoc task-execution, and multinode orchestration.
 * [Packer](https://www.packer.io/) easy to use and automates the creation of any type of machine image. It embraces modern configuration management by encouraging you to use automated scripts to install and configure the software
-
-
-
-* [Packer](https://www.packer.io/)
 
 ## Known issues
 * If Build process fails and within AWS CodeBuild Build logs you find the following line ``Timeout waiting for SSH.``, it means either
