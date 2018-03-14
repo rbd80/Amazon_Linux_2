@@ -7,8 +7,8 @@
     {{ ansible_pkg_mgr }} name={{ item }} state=present update_cache=yes
   with_items:
     - gcc
-#    - httpd
-#    - telnet
+    - httpd
+    - telnet
 
 - name: "Ensure OSSEC src / tmp directories exist"
   stat:
