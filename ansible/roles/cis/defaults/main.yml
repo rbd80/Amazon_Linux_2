@@ -53,7 +53,7 @@ cis_remote_login_warning_banner: "Authorized uses only. All activity may be moni
 
 # 2.2.1.1
 # You should only enable either ntp or chrony, but not both.
-cis_enable_ntp: falsse # Set to true if ntp should be enabled/configured.
+cis_enable_ntp: false # Set to true if ntp should be enabled/configured.
 cis_enable_chrony: true # Set to true if chrony should be enabled/configured.
 
 # 3.4.2
@@ -90,7 +90,7 @@ cis_sshd_client_alive_count_max: 0
 cis_sshd_login_grace_time: 60
 
 # 5.2.15
-cis_sshd_allow_users: "ec2-user" # A comma-delimited list of users to allow ssh access to
+cis_sshd_allow_users: "ec2-user,root" # A comma-delimited list of users to allow ssh access to
 cis_sshd_allow_groups: "" # A comma-delimited list of groups ot allow ssh access to
 cis_sshd_deny_users: "" # A comma-delimited list of users to deny ssh access for
 cis_sshd_deny_groups: "" # A comma-delimited list of groups to deny ssh access for
@@ -126,4 +126,4 @@ cis_umask_shell_files:
 #- /etc/profile.d/custom.sh
 
 # 5.5
-cis_wheel_group_members: "root"
+cis_wheel_group_members: "root,ec2-user"
