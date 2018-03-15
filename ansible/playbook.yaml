@@ -53,7 +53,7 @@
     - ossec
     # Hold off on clamav
     #- clamav
-    - cis
+    #- cis
     - cloudwatchlogs
     - lynis
     - alerts
