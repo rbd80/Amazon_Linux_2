@@ -2,11 +2,11 @@
   "variables": {
     "vpc": "{{env `BUILD_VPC_ID`}}",
     "subnet": "{{env `BUILD_SUBNET_ID`}}",
-    "aws_region": "{{env `AWS_REGION`}}",
-    "ami_name": "Prod-CIS-Latest-AMZN-{{isotime \"02-Jan-06 03_04_05\"}}"
+    "aws_region": "{{env `AWS_REGION`}}"
   },
   "builders": [{
-    "name": "AWS AMI Builder - CIS",
+    "ami_name": "HARDEN-AMAZON-{{isotime \"02-Jan-06\"}}",
+    "name": "Harden Amazon-",
     "type": "amazon-ebs",
     "region": "{{user `aws_region`}}",
     "source_ami_filter": {
@@ -25,7 +25,6 @@
     "force_delete_snapshot": "true",
     "encrypt_boot": true,
     "ssh_username": "ec2-user",
-    "ami_name": "{{user `ami_name` | clean_ami_name}}",
     "tags": {
       "Name": "{{user `ami_name`}}"
     },
@@ -38,8 +37,43 @@
     "snapshot_tags": {
       "Name": "{{user `ami_name`}}"
     },
-    "ami_description": "Amazon Linux CIS with Cloudwatch Logs agent",
+    "ami_description": "Harden Amazon Linux 2",
     "associate_public_ip_address": "true"
+  },{
+    "ami_name": "HARDEN-DEBIAN-{{isotime \"02-Jan-06\"}}",
+    "ami_description": "Harden Debian 1.8 Strech",
+    "associate_public_ip_address": "true",
+    "instance_type": "t2.micro",
+    "name": "Harden Debian-",
+    "region": "{{user `aws_region`}}",
+    "force_deregister": "true",
+    "force_delete_snapshot": "true",
+    "type": "amazon-ebs",
+    "ssh_username": "admin",
+    "encrypt_boot": true,
+    "source_ami_filter": {
+      "filters": {
+        "virtualization-type": "hvm",
+        "architecture": "x86_64",
+        "name": "*k8s-1.8-debian-stretch-*",
+        "block-device-mapping.volume-type": "gp2",
+        "root-device-type": "ebs"
+      },
+      "owners": ["383156758163"],
+      "most_recent": true
+    },
+    "tags": {
+      "Name": "{{user `ami_name`}}"
+    },
+    "run_tags": {
+      "Name": "{{user `ami_name`}}"
+    },
+    "run_volume_tags": {
+      "Name": "{{user `ami_name`}}"
+    },
+    "snapshot_tags": {
+      "Name": "{{user `ami_name`}}"
+    }
   }],
   "provisioners": [
       {
