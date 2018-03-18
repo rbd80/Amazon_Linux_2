@@ -78,12 +78,8 @@
   "provisioners": [
       {
       "type": "shell",
-      "inline": [
-        "sudo easy_install pip",
-        "pip --version",
-        "sudo pip install boto3",
-        "sudo pip install ansible"
-      ]},
+      "script": "config.sh"
+      },
     {
       "type": "ansible-local",
       "playbook_file": "ansible/playbook.yaml",
