@@ -19,6 +19,7 @@ module "build" {
     enabled             = "true"
 
     # Application repository on GitHub
+    github_oauth_token  = ""
     repo_owner          = "GSA-Briar-Patch"
     repo_name           = "Amazon_Linux_2"
     branch              = "master"
