@@ -2,12 +2,6 @@ terraform {
   required_version = ">= 0.9.3"
 }
 
-data "aws_caller_identity" "default" {}
-
-data "aws_region" "default" {
-  current = true
-}
-
 module "build" {
     source              = "git::https://github.com/cloudposse/terraform-aws-cicd.git?ref=master"
     namespace           = "global"
