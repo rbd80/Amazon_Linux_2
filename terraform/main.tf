@@ -130,3 +130,77 @@ data "aws_iam_policy_document" "codebuild" {
     effect    = "Allow"
   }
 }
+
+module "build" {
+  source             = "git::https://github.com/cloudposse/terraform-aws-codebuild.git?ref=tags/0.6.3"
+  namespace          = "${var.namespace}"
+  name               = "${var.name}"
+  stage              = "${var.stage}"
+  build_image        = "${var.build_image}"
+  build_compute_type = "${var.build_compute_type}"
+  buildspec          = "${var.buildspec}"
+  delimiter          = "${var.delimiter}"
+  attributes         = "${concat(var.attributes, list("build"))}"
+  tags               = "${var.tags}"
+  privileged_mode    = "${var.privileged_mode}"
+  aws_region         = "${signum(length(var.aws_region)) == 1 ? var.aws_region : data.aws_region.default.name}"
+  aws_account_id     = "${signum(length(var.aws_account_id)) == 1 ? var.aws_account_id : data.aws_caller_identity.default.account_id}"
+  image_repo_name    = "${var.image_repo_name}"
+  image_tag          = "${var.image_tag}"
+  github_token       = "${var.github_oauth_token}"
+}
+
+resource "aws_iam_role_policy_attachment" "codebuild_s3" {
+  role       = "${module.build.role_arn}"
+  policy_arn = "${aws_iam_policy.s3.arn}"
+}
+
+resource "aws_codepipeline" "source_build" {
+  name     = "${module.label.id}"
+  role_arn = "${aws_iam_role.default.arn}"
+
+  artifact_store {
+    location = "${aws_s3_bucket.default.bucket}"
+    type     = "S3"
+  }
+
+  stage {
+    name = "Source"
+
+    action {
+      name             = "Source"
+      category         = "Source"
+      owner            = "ThirdParty"
+      provider         = "GitHub"
+      version          = "1"
+      output_artifacts = ["code"]
+
+      configuration {
+        OAuthToken           = "${var.github_oauth_token}"
+        Owner                = "${var.repo_owner}"
+        Repo                 = "${var.repo_name}"
+        Branch               = "${var.branch}"
+        PollForSourceChanges = "${var.poll_source_changes}"
+      }
+    }
+  }
+
+  stage {
+    name = "Build"
+
+    action {
+      name     = "Build"
+      category = "Build"
+      owner    = "AWS"
+      provider = "CodeBuild"
+      version  = "1"
+
+      input_artifacts  = ["code"]
+      output_artifacts = ["package"]
+
+      configuration {
+        ProjectName = "${module.build.project_name}"
+      }
+    }
+  }
+}
