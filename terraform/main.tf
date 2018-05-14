@@ -18,7 +18,7 @@ module "build" {
     enabled             = "true"
 
     # Application repository on GitHub
-    #github_oauth_token  = "(Optional) <GitHub Oauth Token with permissions to access private repositories>"
+    github_oauth_token  = ""
     repo_owner          = "GSA-Briar-Patch"
     repo_name           = "Amazon_Linux_2"
     branch              = "master"
