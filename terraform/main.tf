@@ -2,6 +2,11 @@ terraform {
   required_version = ">= 0.9.3"
 }
 
+provider "aws" {
+  version = "~> 1.0"
+  region     = "us-east-1"
+}
+
 data "aws_region" "current" {}
 
 module "build" {
