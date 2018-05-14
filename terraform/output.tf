@@ -1,3 +1,3 @@
 output "debug" {
-  value = "${module.build.aws_codebuild_project.default}"
+  value = "${build.aws_codebuild_project.default}"
 }
