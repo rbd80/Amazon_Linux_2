@@ -1,5 +1,5 @@
 variable "namespace" {
-  default     = "global"
+  default     = "helixviper"
   description = "Namespace, which could be your organization name, e.g. 'cp' or 'cloudposse'"
 }
 
