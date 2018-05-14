@@ -1,7 +1,7 @@
 data "aws_caller_identity" "default" {}
 
 provider "aws" {
-  region     = "us-east-1"
+  region = "${var.aws_region}"
 }
 
 # Define composite variables for resources
