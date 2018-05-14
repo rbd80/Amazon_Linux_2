@@ -1,5 +1,10 @@
 data "aws_caller_identity" "default" {}
 
+provider "aws" {
+  region     = "us-east-1"
+}
+
+
 data "aws_region" "default" {
   current = true
 }
